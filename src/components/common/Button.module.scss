@@ -1,0 +1,43 @@
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1.5rem;
+	border-radius: 8px;
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 1rem;
+	transition: all 200ms ease-out;
+	border: 1px solid #1c1917;
+	height: 48px;
+	cursor: pointer;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.primary {
+	background-color: #1c1917;
+	color: white;
+
+	&:hover {
+		background-color: #57534e;
+	}
+}
+
+.secondary {
+	background-color: white;
+	color: #1c1917;
+
+	&:hover {
+		background-color: #f5f5f4;
+	}
+}
+
+.text {
+	border-color: transparent;
+
+	&:hover {
+		background-color: #f5f5f4;
+	}
+}

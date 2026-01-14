@@ -1,0 +1,33 @@
+.gallery {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2rem;
+	padding: 2rem 1.5rem;
+
+	@media (min-width: 768px) {
+		grid-template-columns: repeat(2, 1fr);
+		padding: 3rem;
+	}
+
+	@media (min-width: 1024px) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.emptyState {
+	grid-column: 1 / -1;
+	text-align: center;
+	padding: 3rem 1.5rem;
+
+	h2 {
+		font-size: 1.5rem;
+		color: #1c1917;
+		margin: 0 0 0.5rem 0;
+	}
+
+	p {
+		color: #78716c;
+		font-size: 0.875rem;
+		margin: 0;
+	}
+}

@@ -1,0 +1,53 @@
+.header {
+	background-color: white;
+	border-bottom: 1px solid #e7e5e4;
+}
+
+.container {
+	max-width: 80rem;
+	margin: 0 auto;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
+
+	@media (min-width: 768px) {
+		padding-left: 3rem;
+		padding-right: 3rem;
+	}
+}
+
+.nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.logo {
+	font-size: 1.25rem;
+	font-family: 'Cormorant Garamond', serif;
+	color: #1c1917;
+	text-decoration: none;
+	transition: color 200ms ease-out;
+
+	&:hover {
+		color: #57534e;
+	}
+}
+
+.navLinks {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+
+	a {
+		font-size: 1rem;
+		color: #57534e;
+		text-decoration: none;
+		transition: color 200ms ease-out;
+
+		&:hover {
+			color: #1c1917;
+		}
+	}
+}

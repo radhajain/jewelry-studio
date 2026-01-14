@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Collection } from '../../types';
 import { format } from 'date-fns';
 import Card from '../common/Card';
+import styles from './CollectionCard.module.scss';
 
 interface CollectionCardProps {
 	collection: Collection;
@@ -21,21 +22,12 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ collection }) => {
 	return (
 		<Card hover onClick={handleClick}>
 			{/* Cover Image */}
-			<div className="aspect-[4/3] rounded-minimal overflow-hidden bg-stone-100 mb-6">
+			<div className={styles.coverImage}>
 				{coverImage ? (
-					<img
-						src={coverImage}
-						alt={collection.name}
-						className="w-full h-full object-cover scale-hover"
-					/>
+					<img src={coverImage} alt={collection.name} />
 				) : (
-					<div className="w-full h-full flex items-center justify-center">
-						<svg
-							className="w-16 h-16 text-stone-300"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
+					<div className={styles.emptyImagePlaceholder}>
+						<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								strokeLinecap="round"
 								strokeLinejoin="round"
@@ -48,21 +40,19 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ collection }) => {
 			</div>
 
 			{/* Collection Info */}
-			<div>
-				<h3 className="text-h3 mb-2">{collection.name}</h3>
-				<p className="text-body-small text-stone-600 mb-4 line-clamp-2">
-					{collection.description}
-				</p>
+			<div className={styles.collectionInfo}>
+				<h3>{collection.name}</h3>
+				<p className={styles.description}>{collection.description}</p>
 
 				{/* Metadata */}
-				<div className="flex items-center justify-between text-caption text-stone-500">
+				<div className={styles.metadata}>
 					<span>{format(new Date(collection.createdAt), 'MMM d, yyyy')}</span>
 				</div>
 
 				{/* Piece Count */}
 				{collection.pieces.length > 0 && (
-					<div className="mt-4 pt-4 border-t border-stone-200">
-						<span className="text-body-small text-stone-600">
+					<div className={styles.pieceCount}>
+						<span>
 							{collection.pieces.length}{' '}
 							{collection.pieces.length === 1 ? 'piece' : 'pieces'}
 						</span>

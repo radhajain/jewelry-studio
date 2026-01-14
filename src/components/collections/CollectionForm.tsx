@@ -7,6 +7,7 @@ import Input from '../common/Input';
 import TextArea from '../common/TextArea';
 import Button from '../common/Button';
 import MoodboardUploader from './MoodboardUploader';
+import styles from './CollectionForm.module.scss';
 
 const METALS: MetalColor[] = [
 	'yellow-gold',
@@ -108,11 +109,11 @@ const CollectionForm: React.FC = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
+		<form onSubmit={handleSubmit} className={styles.formContainer}>
 			{/* Basic Information */}
-			<section className="section-spacing">
-				<h2 className="text-h2 mb-6">Basic Information</h2>
-				<div className="space-y-6">
+			<section className={styles.formSection}>
+				<h2>Basic Information</h2>
+				<div className={styles.formGroup}>
 					<Input
 						label="Collection Name"
 						value={formData.name}
@@ -137,9 +138,9 @@ const CollectionForm: React.FC = () => {
 			</section>
 
 			{/* Moodboard */}
-			<section className="section-spacing">
-				<h2 className="text-h2 mb-2">Moodboard</h2>
-				<p className="text-body text-stone-600 mb-6">
+			<section className={styles.formSection}>
+				<h2>Moodboard</h2>
+				<p>
 					Upload images that capture the aesthetic and inspiration for your
 					collection
 				</p>
@@ -149,21 +150,17 @@ const CollectionForm: React.FC = () => {
 						setFormData({ ...formData, moodboard })
 					}
 				/>
-				{errors.moodboard && (
-					<p className="text-body-small text-red-800 mt-2">
-						{errors.moodboard}
-					</p>
-				)}
+				{errors.moodboard && <p>{errors.moodboard}</p>}
 			</section>
 
 			{/* Theme */}
-			<section className="section-spacing">
-				<h2 className="text-h2 mb-6">Theme</h2>
+			<section className={styles.formSection}>
+				<h2>Theme</h2>
 
 				{/* Mood Keywords */}
-				<div className="mb-6">
+				<div className={styles.moodKeywords}>
 					<label className="input-label">Mood Keywords</label>
-					<div className="flex gap-2 mb-3">
+					<div className={styles.moodInputGroup}>
 						<input
 							type="text"
 							value={moodInput}
@@ -172,23 +169,20 @@ const CollectionForm: React.FC = () => {
 								e.key === 'Enter' && (e.preventDefault(), addMood())
 							}
 							placeholder="e.g., elegant, bold, delicate"
-							className="input flex-1"
+							className={`${styles.moodInput} input`}
 						/>
 						<Button type="button" onClick={addMood} variant="secondary">
 							Add
 						</Button>
 					</div>
-					<div className="flex flex-wrap gap-2">
+					<div className={styles.moodTags}>
 						{formData.theme.mood.map((mood) => (
-							<span
-								key={mood}
-								className="px-3 py-1 bg-stone-100 rounded-full text-body-small flex items-center gap-2"
-							>
+							<span key={mood} className={styles.moodTag}>
 								{mood}
 								<button
 									type="button"
 									onClick={() => removeMood(mood)}
-									className="text-stone-500 hover:text-stone-900"
+									className={styles.removeButton}
 								>
 									×
 								</button>
@@ -199,30 +193,23 @@ const CollectionForm: React.FC = () => {
 			</section>
 
 			{/* Colors & Materials */}
-			<section className="section-spacing">
-				<h2 className="text-h2 mb-6">Colors & Materials</h2>
+			<section className={styles.formSection}>
+				<h2>Colors & Materials</h2>
 
 				{/* Metal Selection */}
-				<div className="mb-6">
+				<div className={styles.metalSelection}>
 					<label className="input-label">Available Metals</label>
-					<div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+					<div className={styles.metalGrid}>
 						{METALS.map((metal) => (
 							<button
 								key={metal}
 								type="button"
 								onClick={() => toggleMetal(metal)}
-								className={`
-                  px-4 py-3 rounded-minimal border transition-all duration-200
-                  ${
-										formData.colors.metals.includes(metal)
-											? 'border-stone-900 bg-stone-900 text-white'
-											: 'border-stone-300 hover:border-stone-500'
-									}
-                `}
+								className={`${styles.metalButton} ${
+									formData.colors.metals.includes(metal) ? styles.active : ''
+								}`}
 							>
-								<span className="capitalize font-serif text-sm">
-									{metal.replace('-', ' ')}
-								</span>
+								<span>{metal.replace('-', ' ')}</span>
 							</button>
 						))}
 					</div>
@@ -230,7 +217,7 @@ const CollectionForm: React.FC = () => {
 			</section>
 
 			{/* Actions */}
-			<div className="flex gap-4 pt-8 border-t border-stone-200">
+			<div className={styles.formActions}>
 				<Button type="button" variant="secondary" onClick={() => navigate(-1)}>
 					Cancel
 				</Button>

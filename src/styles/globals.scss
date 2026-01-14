@@ -1,0 +1,746 @@
+/* ============================================================================
+   BASE STYLES
+   ============================================================================ */
+
+html {
+	font-family: 'Inter', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	background-color: #fafaf9;
+	color: #1c1917;
+	margin: 0;
+	padding: 0;
+}
+
+/* Typography Scale */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'Cormorant Garamond', serif;
+	font-weight: 500;
+	line-height: 1.2;
+	color: #1c1917;
+	margin: 0;
+}
+
+h1 {
+	font-size: 3rem;
+	font-weight: 600;
+}
+
+h2 {
+	font-size: 2.25rem;
+	font-weight: 500;
+}
+
+h3 {
+	font-size: 1.5rem;
+	font-weight: 500;
+}
+
+h4 {
+	font-size: 1.25rem;
+	font-weight: 500;
+}
+
+p {
+	line-height: 1.6;
+	color: #1c1917;
+	margin: 0;
+}
+
+/* ============================================================================
+   BUTTON STYLES
+   ============================================================================ */
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1.5rem;
+	border-radius: 8px;
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 1rem;
+	transition: all 200ms ease-out;
+	border: 1px solid #1c1917;
+	height: 48px;
+	cursor: pointer;
+}
+
+.btn:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px #78716c;
+}
+
+.btn-primary {
+	background-color: #1c1917;
+	color: white;
+}
+
+.btn-primary:hover {
+	background-color: #57534e;
+}
+
+.btn-secondary {
+	background-color: white;
+	color: #1c1917;
+}
+
+.btn-secondary:hover {
+	background-color: #f5f5f4;
+}
+
+.btn-text {
+	border-color: transparent;
+}
+
+.btn-text:hover {
+	background-color: #f5f5f4;
+}
+
+/* ============================================================================
+   CARD STYLES
+   ============================================================================ */
+
+.card {
+	background-color: white;
+	border-radius: 8px;
+	padding: 1.5rem;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	transition: box-shadow 200ms ease-out;
+}
+
+@media (min-width: 768px) {
+	.card {
+		padding: 2rem;
+	}
+}
+
+.card-hover {
+	background-color: white;
+	border-radius: 8px;
+	padding: 1.5rem;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	transition: box-shadow 200ms ease-out;
+	cursor: pointer;
+}
+
+.card-hover:hover {
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================================================
+   INPUT STYLES
+   ============================================================================ */
+
+.input {
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border: 1px solid #e7e5e4;
+	border-radius: 8px;
+	font-family: 'Inter', sans-serif;
+	font-size: 1rem;
+	transition: all 200ms ease-out;
+	height: 48px;
+}
+
+.input::placeholder {
+	color: #a8a29e;
+}
+
+.input:focus {
+	outline: none;
+	border-color: #78716c;
+	box-shadow: inset 0 0 0 1px #78716c;
+}
+
+.input.error {
+	border-color: #b91c1c;
+}
+
+.input-label {
+	display: block;
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 1.125rem;
+	color: #1c1917;
+	margin-bottom: 0.5rem;
+}
+
+/* ============================================================================
+   CONTAINER & LAYOUT UTILITIES
+   ============================================================================ */
+
+.container-page {
+	max-width: 80rem;
+	margin: 0 auto;
+	padding: 1.5rem 3rem;
+}
+
+@media (min-width: 768px) {
+	.container-page {
+		padding: 3rem;
+	}
+}
+
+.section-spacing {
+	margin-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+	.section-spacing {
+		margin-bottom: 6rem;
+	}
+}
+
+/* ============================================================================
+   TEXT UTILITIES
+   ============================================================================ */
+
+.text-display {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 3rem;
+	font-weight: 600;
+	line-height: 1.1;
+}
+
+.text-h1 {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 2.25rem;
+	font-weight: 500;
+	line-height: 1.2;
+}
+
+.text-h2 {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 1.5rem;
+	font-weight: 500;
+	line-height: 1.3;
+}
+
+.text-h3 {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 1.25rem;
+	font-weight: 500;
+	line-height: 1.4;
+}
+
+.text-body-large {
+	font-size: 1.125rem;
+	line-height: 1.6;
+}
+
+.text-body {
+	font-size: 1rem;
+	line-height: 1.6;
+}
+
+.text-body-small {
+	font-size: 0.875rem;
+	line-height: 1.5;
+}
+
+.text-caption {
+	font-size: 0.75rem;
+	line-height: 1.4;
+	letter-spacing: 0.02em;
+}
+
+/* ============================================================================
+   ANIMATION UTILITIES
+   ============================================================================ */
+
+.fade-in {
+	animation: fadeIn 300ms ease-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.scale-hover {
+	transition: transform 200ms ease-out;
+}
+
+.scale-hover:hover {
+	transform: scale(1.01);
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+.line-clamp-2 {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.w-full {
+	width: 100%;
+}
+
+.h-full {
+	height: 100%;
+}
+
+.aspect-square {
+	aspect-ratio: 1 / 1;
+}
+
+.aspect-\[4\/3\] {
+	aspect-ratio: 4 / 3;
+}
+
+.grid {
+	display: grid;
+}
+
+.grid-cols-1 {
+	grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+	.md\:grid-cols-2 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.md\:grid-cols-3 {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 1024px) {
+	.lg\:grid-cols-3 {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.gap-2 {
+	gap: 0.5rem;
+}
+
+.gap-3 {
+	gap: 0.75rem;
+}
+
+.gap-4 {
+	gap: 1rem;
+}
+
+.gap-6 {
+	gap: 1.5rem;
+}
+
+.gap-8 {
+	gap: 2rem;
+}
+
+.mb-1 {
+	margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+	margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+	margin-bottom: 0.75rem;
+}
+
+.mb-4 {
+	margin-bottom: 1rem;
+}
+
+.mb-6 {
+	margin-bottom: 1.5rem;
+}
+
+.mb-8 {
+	margin-bottom: 2rem;
+}
+
+.mb-12 {
+	margin-bottom: 3rem;
+}
+
+.mt-1 {
+	margin-top: 0.25rem;
+}
+
+.mt-2 {
+	margin-top: 0.5rem;
+}
+
+.mt-4 {
+	margin-top: 1rem;
+}
+
+.mt-8 {
+	margin-top: 2rem;
+}
+
+.mx-auto {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.pt-4 {
+	padding-top: 1rem;
+}
+
+.pt-8 {
+	padding-top: 2rem;
+}
+
+.px-3 {
+	padding-left: 0.75rem;
+	padding-right: 0.75rem;
+}
+
+.px-4 {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.px-6 {
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+}
+
+.py-1 {
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+}
+
+.py-2 {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.py-3 {
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
+}
+
+.py-6 {
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
+}
+
+.py-12 {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
+
+.py-24 {
+	padding-top: 6rem;
+	padding-bottom: 6rem;
+}
+
+.flex {
+	display: flex;
+}
+
+.flex-col {
+	flex-direction: column;
+}
+
+.items-center {
+	align-items: center;
+}
+
+.items-start {
+	align-items: flex-start;
+}
+
+.justify-center {
+	justify-content: center;
+}
+
+.justify-between {
+	justify-content: space-between;
+}
+
+.object-cover {
+	object-fit: cover;
+}
+
+.overflow-hidden {
+	overflow: hidden;
+}
+
+.overflow-y-auto {
+	overflow-y: auto;
+}
+
+.rounded-minimal {
+	border-radius: 8px;
+}
+
+.rounded-full {
+	border-radius: 9999px;
+}
+
+.border {
+	border: 1px solid;
+}
+
+.border-t {
+	border-top: 1px solid;
+}
+
+.border-stone-200 {
+	border-color: #e7e5e4;
+}
+
+.border-stone-300 {
+	border-color: #d6d3d1;
+}
+
+.border-stone-900 {
+	border-color: #1c1917;
+}
+
+.border-red-800 {
+	border-color: #b91c1c;
+}
+
+.border-dashed {
+	border-style: dashed;
+}
+
+.border-2 {
+	border-width: 2px;
+}
+
+.bg-white {
+	background-color: white;
+}
+
+.bg-stone-50 {
+	background-color: #fafaf9;
+}
+
+.bg-stone-100 {
+	background-color: #f5f5f4;
+}
+
+.bg-stone-300 {
+	background-color: #d6d3d1;
+}
+
+.bg-stone-900 {
+	background-color: #1c1917;
+}
+
+.bg-stone-900\/80 {
+	background-color: rgba(28, 25, 23, 0.8);
+}
+
+.text-white {
+	color: white;
+}
+
+.text-stone-300 {
+	color: #d6d3d1;
+}
+
+.text-stone-400 {
+	color: #a8a29e;
+}
+
+.text-stone-500 {
+	color: #78716c;
+}
+
+.text-stone-600 {
+	color: #57534e;
+}
+
+.text-stone-900 {
+	color: #1c1917;
+}
+
+.text-red-800 {
+	color: #b91c1c;
+}
+
+.hover\:bg-stone-50:hover {
+	background-color: #fafaf9;
+}
+
+.hover\:bg-stone-100:hover {
+	background-color: #f5f5f4;
+}
+
+.hover\:bg-stone-600:hover {
+	background-color: #57534e;
+}
+
+.hover\:border-stone-500:hover {
+	border-color: #78716c;
+}
+
+.hover\:text-stone-600:hover {
+	color: #57534e;
+}
+
+.hover\:text-stone-900:hover {
+	color: #1c1917;
+}
+
+.hover\:bg-stone-900:hover {
+	background-color: #1c1917;
+}
+
+.hover\:opacity-100:hover {
+	opacity: 1;
+}
+
+.opacity-0 {
+	opacity: 0;
+}
+
+.opacity-50 {
+	opacity: 0.5;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.cursor-not-allowed {
+	cursor: not-allowed;
+}
+
+.fixed {
+	position: fixed;
+}
+
+.absolute {
+	position: absolute;
+}
+
+.relative {
+	position: relative;
+}
+
+.top-2 {
+	top: 0.5rem;
+}
+
+.right-2 {
+	right: 0.5rem;
+}
+
+.inset-0 {
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.top-1\/2 {
+	top: 50%;
+}
+
+.left-1\/2 {
+	left: 50%;
+}
+
+.h-screen {
+	height: 100vh;
+}
+
+.min-h-screen {
+	min-height: 100vh;
+}
+
+.w-4 {
+	width: 1rem;
+}
+
+.w-8 {
+	width: 2rem;
+}
+
+.w-12 {
+	width: 3rem;
+}
+
+.w-16 {
+	width: 4rem;
+}
+
+.w-24 {
+	width: 6rem;
+}
+
+.h-4 {
+	height: 1rem;
+}
+
+.h-8 {
+	height: 2rem;
+}
+
+.h-12 {
+	height: 3rem;
+}
+
+.h-16 {
+	height: 4rem;
+}
+
+.h-24 {
+	height: 6rem;
+}
+
+.resize-none {
+	resize: none;
+}
+
+.transition-all {
+	transition: all 200ms ease-out;
+}
+
+.transition-colors {
+	transition: color 200ms ease-out;
+}
+
+.transition-opacity {
+	transition: opacity 200ms ease-out;
+}
+
+.group {
+	position: relative;
+}
+
+.group-hover\:opacity-100:hover {
+	opacity: 1;
+	transition: opacity 200ms ease-out;
+}
