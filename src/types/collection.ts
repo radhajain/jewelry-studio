@@ -13,7 +13,7 @@ export interface Collection {
 
 	// Design Parameters (Global Stylesheet)
 	colors: ColorPalette;
-	gemstones: Gemstone[];
+	gemstoneIds: string[]; // References to preset gemstones
 	bezelDesigns: BezelDesign[];
 
 	// Pieces in this collection

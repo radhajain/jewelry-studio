@@ -4,6 +4,7 @@ import { useStore } from '../store';
 import Button from '../components/common/Button';
 import Modal from '../components/common/Modal';
 import { CollectionForm } from '../components/collections/CollectionForm';
+import PieceCard from '../components/pieces/PieceCard';
 import styles from './CollectionDetail.module.css';
 
 const CollectionDetail: React.FC = () => {
@@ -35,9 +36,10 @@ const CollectionDetail: React.FC = () => {
 	return (
 		<div className={styles.page}>
 			<div className={styles.container}>
+				<div className={styles.slug}>Collections / {collection.name}</div>
+
 				{/* Header */}
 				<div className={styles.header}>
-					<h1 className={styles.title}>{collection.name}</h1>
 					<p className={styles.subtitle}>{collection.description}</p>
 
 					<div className={styles.actions}>
@@ -94,20 +96,49 @@ const CollectionDetail: React.FC = () => {
 
 				{/* Pieces */}
 				<div className={styles.section}>
-					<h2 className={styles.sectionTitle}>Pieces</h2>
+					<div className={styles.sectionHeader}>
+						<h2 className={styles.sectionTitle}>Pieces</h2>
+						{collection.pieces.length > 0 && (
+							<div className={styles.pieceActions}>
+								<Button
+									variant="secondary"
+									onClick={() => handleNewPiece('ring')}
+								>
+									Design Ring
+								</Button>
+								<Button
+									variant="secondary"
+									onClick={() => handleNewPiece('earring')}
+								>
+									Design Earring
+								</Button>
+								<Button
+									variant="secondary"
+									onClick={() => handleNewPiece('bracelet')}
+								>
+									Design Bracelet
+								</Button>
+								<Button
+									variant="secondary"
+									onClick={() => handleNewPiece('necklace')}
+								>
+									Design Necklace
+								</Button>
+							</div>
+						)}
+					</div>
 
 					{collection.pieces.length > 0 ? (
 						<div className={styles.pieces}>
-							{/* Pieces will be rendered here */}
-							<p
-								style={{
-									textAlign: 'center',
-									gridColumn: '1 / -1',
-									color: 'var(--color-text-tertiary)',
-								}}
-							>
-								Piece cards coming soon
-							</p>
+							{collection.pieces.map((piece) => (
+								<PieceCard
+									key={piece.id}
+									piece={piece}
+									onClick={() =>
+										navigate(`/collections/${collectionId}/piece/${piece.id}`)
+									}
+								/>
+							))}
 						</div>
 					) : (
 						<div className={styles.emptyPieces}>

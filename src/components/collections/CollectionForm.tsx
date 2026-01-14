@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { MetalColor, Gemstone, BezelDesign, MoodboardImage } from '../../types';
+import { MetalColor, BezelDesign, MoodboardImage } from '../../types';
 import { useStore } from '../../store';
+import { PRESET_GEMSTONES } from '../../data/gemstones';
 import Input from '../common/Input';
 import TextArea from '../common/TextArea';
 import Button from '../common/Button';
@@ -49,7 +50,7 @@ export const CollectionForm: React.FC<CollectionFormProps> = ({
       metals: ['yellow-gold'] as MetalColor[],
       accents: ['#1C1917', '#78716C'],
     },
-    gemstones: [] as Gemstone[],
+    gemstoneIds: [] as string[],
     bezelDesigns: [] as BezelDesign[],
   });
 
@@ -65,7 +66,7 @@ export const CollectionForm: React.FC<CollectionFormProps> = ({
         theme: existingCollection.theme,
         moodboard: existingCollection.moodboard,
         colors: existingCollection.colors,
-        gemstones: existingCollection.gemstones,
+        gemstoneIds: existingCollection.gemstoneIds,
         bezelDesigns: existingCollection.bezelDesigns,
       });
     }
@@ -142,6 +143,17 @@ export const CollectionForm: React.FC<CollectionFormProps> = ({
     setFormData({
       ...formData,
       colors: { ...formData.colors, metals },
+    });
+  };
+
+  const toggleGemstone = (gemstoneId: string) => {
+    const gemstoneIds = formData.gemstoneIds.includes(gemstoneId)
+      ? formData.gemstoneIds.filter((id) => id !== gemstoneId)
+      : [...formData.gemstoneIds, gemstoneId];
+
+    setFormData({
+      ...formData,
+      gemstoneIds,
     });
   };
 
@@ -235,7 +247,7 @@ export const CollectionForm: React.FC<CollectionFormProps> = ({
         <h3 className={styles.sectionTitle}>Available Materials</h3>
 
         {/* Metal Selection */}
-        <div>
+        <div className={styles.subsection}>
           <label className={styles.label}>Metals</label>
           <div className={styles.metalGrid}>
             {METALS.map((metal) => (
@@ -248,6 +260,32 @@ export const CollectionForm: React.FC<CollectionFormProps> = ({
                 }`}
               >
                 {metal.replace('-', ' ')}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Gemstone Selection */}
+        <div className={styles.subsection}>
+          <label className={styles.label}>Gemstones</label>
+          <p className={styles.sectionDescription}>
+            Select gemstones to include in your collection palette
+          </p>
+          <div className={styles.gemstoneGrid}>
+            {PRESET_GEMSTONES.map((gemstone) => (
+              <button
+                key={gemstone.id}
+                type="button"
+                onClick={() => toggleGemstone(gemstone.id)}
+                className={`${styles.gemstoneButton} ${
+                  formData.gemstoneIds.includes(gemstone.id) ? styles.active : ''
+                }`}
+              >
+                <div
+                  className={styles.gemstoneColorPreview}
+                  style={{ backgroundColor: gemstone.color }}
+                />
+                <div className={styles.gemstoneName}>{gemstone.name}</div>
               </button>
             ))}
           </div>

@@ -1,7 +1,7 @@
 .header {
   background-color: var(--color-bg-elevated);
   border-bottom: 1px solid var(--color-border);
-  padding: var(--space-lg) 0;
+  padding: var(--space-md) 0;
 }
 
 .container {
@@ -9,14 +9,14 @@
   margin: 0 auto;
   padding: 0 var(--space-xl);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
 .logo {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 400;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-text-primary);
   transition: color var(--transition-fast);
@@ -24,4 +24,22 @@
 
 .logo:hover {
   color: var(--color-text-secondary);
+}
+
+.nav {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.navLink {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.navLink:hover {
+  color: var(--color-text-primary);
 }

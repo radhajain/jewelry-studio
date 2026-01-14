@@ -9,6 +9,14 @@ const Header: React.FC = () => {
         <Link to="/" className={styles.logo}>
           Jewelry Studio
         </Link>
+        <nav className={styles.nav}>
+          <Link to="/" className={styles.navLink}>
+            Collections
+          </Link>
+          <Link to="/pieces" className={styles.navLink}>
+            Pieces
+          </Link>
+        </nav>
       </div>
     </header>
   );
