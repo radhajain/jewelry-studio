@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import { MoodboardImage } from '../../types';
 import { processImageFile } from '../../utils/imageUtils';
 import toast from 'react-hot-toast';
-import styles from './MoodboardUploader.module.scss';
+import styles from './MoodboardUploader.module.css';
 
 interface MoodboardUploaderProps {
 	images: MoodboardImage[];
@@ -84,51 +84,53 @@ const MoodboardUploader: React.FC<MoodboardUploaderProps> = ({
 			{images.length < maxImages && (
 				<div
 					{...getRootProps()}
-					className={`${styles.uploadArea} ${
-						isDragActive ? styles.active : styles.inactive
-					} ${uploading ? styles.disabled : ''}`}
+					className={`${styles.dropzone} ${
+						isDragActive ? styles.dropzoneActive : ''
+					} ${uploading ? styles.dropzoneDisabled : ''}`}
 				>
 					<input {...getInputProps()} />
-					<svg
-						className={styles.icon}
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={1.5}
-							d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-						/>
-					</svg>
-					{uploading ? (
-						<p className={styles.uploadText}>Processing images...</p>
-					) : (
-						<>
-							<p className={styles.uploadText}>
-								{isDragActive ? 'Drop images here' : 'Drag & drop images'}
-							</p>
-							<p className={styles.uploadHint}>
-								or click to browse • JPEG, PNG, WebP • Max {maxImages} images
-							</p>
-						</>
-					)}
+					<div className={styles.dropzoneContent}>
+						<svg
+							className={styles.icon}
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={1.5}
+								d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+							/>
+						</svg>
+						{uploading ? (
+							<p className={styles.dropzoneText}>Processing images...</p>
+						) : (
+							<>
+								<p className={styles.dropzoneText}>
+									{isDragActive ? 'Drop images here' : 'Drag & drop images'}
+								</p>
+								<p className={styles.dropzoneHint}>
+									or click to browse • JPEG, PNG, WebP • Max {maxImages} images
+								</p>
+							</>
+						)}
+					</div>
 				</div>
 			)}
 
 			{/* Image Grid */}
 			{images.length > 0 && (
-				<div className={styles.imageGrid}>
+				<div className={styles.gallery}>
 					{images.map((image) => (
-						<div key={image.id} className={styles.imageItem}>
-							<img src={image.thumbnail} alt="Moodboard" />
+						<div key={image.id} className={styles.imageContainer}>
+							<img src={image.thumbnail} alt="Moodboard" className={styles.image} />
 							<button
 								onClick={() => removeImage(image.id)}
 								className={styles.removeButton}
 								aria-label="Remove image"
 							>
-								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
 										strokeLinecap="round"
 										strokeLinejoin="round"
@@ -144,7 +146,7 @@ const MoodboardUploader: React.FC<MoodboardUploaderProps> = ({
 
 			{/* Image Count */}
 			{images.length > 0 && (
-				<p className={styles.imageCount}>
+				<p className={styles.count}>
 					{images.length} of {maxImages} images uploaded
 				</p>
 			)}

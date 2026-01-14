@@ -1,0 +1,158 @@
+.form {
+  max-width: 100%;
+}
+
+.section {
+  margin-bottom: var(--space-3xl);
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.sectionDescription {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  line-height: 1.6;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.error {
+  font-size: 13px;
+  color: var(--color-accent);
+  margin-top: var(--space-sm);
+  text-align: center;
+}
+
+/* Mood Keywords */
+.moodKeywords {
+  margin-top: var(--space-lg);
+}
+
+.moodInputGroup {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.moodInput {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--color-text-primary);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  transition: border-color var(--transition-fast);
+}
+
+.moodInput:focus {
+  border-bottom-color: var(--color-text-primary);
+  outline: none;
+}
+
+.moodTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.moodTag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  letter-spacing: 0.02em;
+}
+
+.removeButton {
+  background: none;
+  border: none;
+  color: var(--color-text-tertiary);
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.removeButton:hover {
+  color: var(--color-text-primary);
+}
+
+/* Metal Selection */
+.metalGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-md);
+}
+
+.metalButton {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.metalButton:hover {
+  border-color: var(--color-text-primary);
+}
+
+.metalButton.active {
+  background: var(--color-accent);
+  color: var(--color-bg-elevated);
+  border-color: var(--color-accent);
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  padding-top: var(--space-2xl);
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+  .metalGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}

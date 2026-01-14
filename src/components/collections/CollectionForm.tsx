@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { MetalColor, Gemstone, BezelDesign, MoodboardImage } from '../../types';
@@ -7,226 +7,266 @@ import Input from '../common/Input';
 import TextArea from '../common/TextArea';
 import Button from '../common/Button';
 import MoodboardUploader from './MoodboardUploader';
-import styles from './CollectionForm.module.scss';
+import styles from './CollectionForm.module.css';
 
 const METALS: MetalColor[] = [
-	'yellow-gold',
-	'white-gold',
-	'rose-gold',
-	'platinum',
-	'silver',
+  'yellow-gold',
+  'white-gold',
+  'rose-gold',
+  'platinum',
+  'silver',
 ];
 
-const CollectionForm: React.FC = () => {
-	const navigate = useNavigate();
-	const createCollection = useStore((state) => state.createCollection);
+interface CollectionFormProps {
+  collectionId?: string;
+  onSuccess?: () => void;
+}
 
-	const [formData, setFormData] = useState({
-		name: '',
-		description: '',
-		theme: {
-			primaryColor: '#1C1917',
-			secondaryColor: '#78716C',
-			accentColor: '#D6D3D1',
-			mood: [] as string[],
-		},
-		moodboard: [] as MoodboardImage[],
-		colors: {
-			metals: ['yellow-gold'] as MetalColor[],
-			accents: ['#1C1917', '#78716C'],
-		},
-		gemstones: [] as Gemstone[],
-		bezelDesigns: [] as BezelDesign[],
-	});
+export const CollectionForm: React.FC<CollectionFormProps> = ({
+  collectionId,
+  onSuccess,
+}) => {
+  const navigate = useNavigate();
+  const createCollection = useStore((state) => state.createCollection);
+  const updateCollection = useStore((state) => state.updateCollection);
+  const existingCollection = useStore((state) =>
+    collectionId ? state.collections.find((c) => c.id === collectionId) : null
+  );
 
-	const [errors, setErrors] = useState<Record<string, string>>({});
-	const [moodInput, setMoodInput] = useState('');
+  const isEditing = !!collectionId && !!existingCollection;
 
-	const validate = () => {
-		const newErrors: Record<string, string> = {};
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    theme: {
+      primaryColor: '#1C1917',
+      secondaryColor: '#78716C',
+      accentColor: '#D6D3D1',
+      mood: [] as string[],
+    },
+    moodboard: [] as MoodboardImage[],
+    colors: {
+      metals: ['yellow-gold'] as MetalColor[],
+      accents: ['#1C1917', '#78716C'],
+    },
+    gemstones: [] as Gemstone[],
+    bezelDesigns: [] as BezelDesign[],
+  });
 
-		if (!formData.name.trim()) {
-			newErrors.name = 'Collection name is required';
-		}
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [moodInput, setMoodInput] = useState('');
 
-		if (!formData.description.trim()) {
-			newErrors.description = 'Description is required';
-		}
+  // Load existing collection data when editing
+  useEffect(() => {
+    if (existingCollection) {
+      setFormData({
+        name: existingCollection.name,
+        description: existingCollection.description,
+        theme: existingCollection.theme,
+        moodboard: existingCollection.moodboard,
+        colors: existingCollection.colors,
+        gemstones: existingCollection.gemstones,
+        bezelDesigns: existingCollection.bezelDesigns,
+      });
+    }
+  }, [existingCollection]);
 
-		if (formData.moodboard.length === 0) {
-			newErrors.moodboard = 'Please upload at least one moodboard image';
-		}
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
 
-		setErrors(newErrors);
-		return Object.keys(newErrors).length === 0;
-	};
+    if (!formData.name.trim()) {
+      newErrors.name = 'Collection name is required';
+    }
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
+    if (!formData.description.trim()) {
+      newErrors.description = 'Description is required';
+    }
 
-		if (!validate()) {
-			toast.error('Please fill in all required fields');
-			return;
-		}
+    if (formData.moodboard.length === 0) {
+      newErrors.moodboard = 'Please upload at least one moodboard image';
+    }
 
-		createCollection(formData);
-		toast.success('Collection created successfully!');
-		navigate('/');
-	};
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-	const addMood = () => {
-		if (moodInput.trim() && !formData.theme.mood.includes(moodInput.trim())) {
-			setFormData({
-				...formData,
-				theme: {
-					...formData.theme,
-					mood: [...formData.theme.mood, moodInput.trim()],
-				},
-			});
-			setMoodInput('');
-		}
-	};
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-	const removeMood = (mood: string) => {
-		setFormData({
-			...formData,
-			theme: {
-				...formData.theme,
-				mood: formData.theme.mood.filter((m) => m !== mood),
-			},
-		});
-	};
+    if (!validate()) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
 
-	const toggleMetal = (metal: MetalColor) => {
-		const metals = formData.colors.metals.includes(metal)
-			? formData.colors.metals.filter((m) => m !== metal)
-			: [...formData.colors.metals, metal];
+    if (isEditing) {
+      updateCollection(collectionId!, formData);
+      toast.success('Collection updated successfully!');
+      if (onSuccess) {
+        onSuccess();
+      }
+    } else {
+      createCollection(formData);
+      toast.success('Collection created successfully!');
+      navigate('/');
+    }
+  };
 
-		setFormData({
-			...formData,
-			colors: { ...formData.colors, metals },
-		});
-	};
+  const addMood = () => {
+    if (moodInput.trim() && !formData.theme.mood.includes(moodInput.trim())) {
+      setFormData({
+        ...formData,
+        theme: {
+          ...formData.theme,
+          mood: [...formData.theme.mood, moodInput.trim()],
+        },
+      });
+      setMoodInput('');
+    }
+  };
 
-	return (
-		<form onSubmit={handleSubmit} className={styles.formContainer}>
-			{/* Basic Information */}
-			<section className={styles.formSection}>
-				<h2>Basic Information</h2>
-				<div className={styles.formGroup}>
-					<Input
-						label="Collection Name"
-						value={formData.name}
-						onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-						placeholder="e.g., Spring 2026 Collection"
-						error={errors.name}
-						required
-					/>
+  const removeMood = (mood: string) => {
+    setFormData({
+      ...formData,
+      theme: {
+        ...formData.theme,
+        mood: formData.theme.mood.filter((m) => m !== mood),
+      },
+    });
+  };
 
-					<TextArea
-						label="Description"
-						value={formData.description}
-						onChange={(e) =>
-							setFormData({ ...formData, description: e.target.value })
-						}
-						placeholder="Describe the inspiration and vision for this collection..."
-						error={errors.description}
-						rows={4}
-						required
-					/>
-				</div>
-			</section>
+  const toggleMetal = (metal: MetalColor) => {
+    const metals = formData.colors.metals.includes(metal)
+      ? formData.colors.metals.filter((m) => m !== metal)
+      : [...formData.colors.metals, metal];
 
-			{/* Moodboard */}
-			<section className={styles.formSection}>
-				<h2>Moodboard</h2>
-				<p>
-					Upload images that capture the aesthetic and inspiration for your
-					collection
-				</p>
-				<MoodboardUploader
-					images={formData.moodboard}
-					onImagesChange={(moodboard) =>
-						setFormData({ ...formData, moodboard })
-					}
-				/>
-				{errors.moodboard && <p>{errors.moodboard}</p>}
-			</section>
+    setFormData({
+      ...formData,
+      colors: { ...formData.colors, metals },
+    });
+  };
 
-			{/* Theme */}
-			<section className={styles.formSection}>
-				<h2>Theme</h2>
+  return (
+    <form onSubmit={handleSubmit} className={styles.form}>
+      {/* Basic Information */}
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>Basic Information</h3>
+        <div className={styles.fields}>
+          <Input
+            label="Collection Name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            placeholder="e.g., Spring 2026 Collection"
+            error={errors.name}
+            required
+          />
 
-				{/* Mood Keywords */}
-				<div className={styles.moodKeywords}>
-					<label className="input-label">Mood Keywords</label>
-					<div className={styles.moodInputGroup}>
-						<input
-							type="text"
-							value={moodInput}
-							onChange={(e) => setMoodInput(e.target.value)}
-							onKeyPress={(e) =>
-								e.key === 'Enter' && (e.preventDefault(), addMood())
-							}
-							placeholder="e.g., elegant, bold, delicate"
-							className={`${styles.moodInput} input`}
-						/>
-						<Button type="button" onClick={addMood} variant="secondary">
-							Add
-						</Button>
-					</div>
-					<div className={styles.moodTags}>
-						{formData.theme.mood.map((mood) => (
-							<span key={mood} className={styles.moodTag}>
-								{mood}
-								<button
-									type="button"
-									onClick={() => removeMood(mood)}
-									className={styles.removeButton}
-								>
-									×
-								</button>
-							</span>
-						))}
-					</div>
-				</div>
-			</section>
+          <TextArea
+            label="Description"
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+            placeholder="Describe the inspiration and vision for this collection..."
+            error={errors.description}
+            rows={4}
+            required
+          />
+        </div>
+      </section>
 
-			{/* Colors & Materials */}
-			<section className={styles.formSection}>
-				<h2>Colors & Materials</h2>
+      {/* Moodboard */}
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>Moodboard</h3>
+        <p className={styles.sectionDescription}>
+          Upload images that capture the aesthetic and inspiration for your collection
+        </p>
+        <MoodboardUploader
+          images={formData.moodboard}
+          onImagesChange={(moodboard) =>
+            setFormData({ ...formData, moodboard })
+          }
+        />
+        {errors.moodboard && <p className={styles.error}>{errors.moodboard}</p>}
+      </section>
 
-				{/* Metal Selection */}
-				<div className={styles.metalSelection}>
-					<label className="input-label">Available Metals</label>
-					<div className={styles.metalGrid}>
-						{METALS.map((metal) => (
-							<button
-								key={metal}
-								type="button"
-								onClick={() => toggleMetal(metal)}
-								className={`${styles.metalButton} ${
-									formData.colors.metals.includes(metal) ? styles.active : ''
-								}`}
-							>
-								<span>{metal.replace('-', ' ')}</span>
-							</button>
-						))}
-					</div>
-				</div>
-			</section>
+      {/* Theme */}
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>Theme</h3>
 
-			{/* Actions */}
-			<div className={styles.formActions}>
-				<Button type="button" variant="secondary" onClick={() => navigate(-1)}>
-					Cancel
-				</Button>
-				<Button type="submit" variant="primary">
-					Create Collection
-				</Button>
-			</div>
-		</form>
-	);
+        {/* Mood Keywords */}
+        <div className={styles.moodKeywords}>
+          <label className={styles.label}>Mood Keywords</label>
+          <div className={styles.moodInputGroup}>
+            <input
+              type="text"
+              value={moodInput}
+              onChange={(e) => setMoodInput(e.target.value)}
+              onKeyPress={(e) =>
+                e.key === 'Enter' && (e.preventDefault(), addMood())
+              }
+              placeholder="e.g., elegant, bold, delicate"
+              className={styles.moodInput}
+            />
+            <Button type="button" onClick={addMood} variant="secondary">
+              Add
+            </Button>
+          </div>
+          {formData.theme.mood.length > 0 && (
+            <div className={styles.moodTags}>
+              {formData.theme.mood.map((mood) => (
+                <span key={mood} className={styles.moodTag}>
+                  {mood}
+                  <button
+                    type="button"
+                    onClick={() => removeMood(mood)}
+                    className={styles.removeButton}
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Colors & Materials */}
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>Available Materials</h3>
+
+        {/* Metal Selection */}
+        <div>
+          <label className={styles.label}>Metals</label>
+          <div className={styles.metalGrid}>
+            {METALS.map((metal) => (
+              <button
+                key={metal}
+                type="button"
+                onClick={() => toggleMetal(metal)}
+                className={`${styles.metalButton} ${
+                  formData.colors.metals.includes(metal) ? styles.active : ''
+                }`}
+              >
+                {metal.replace('-', ' ')}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Actions */}
+      <div className={styles.actions}>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => (onSuccess ? onSuccess() : navigate(-1))}
+        >
+          Cancel
+        </Button>
+        <Button type="submit" variant="primary">
+          {isEditing ? 'Save Changes' : 'Create Collection'}
+        </Button>
+      </div>
+    </form>
+  );
 };
-
-export default CollectionForm;

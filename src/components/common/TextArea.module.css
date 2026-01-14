@@ -1,0 +1,47 @@
+.container {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color var(--transition-fast);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.textarea:focus {
+  border-bottom-color: var(--color-text-primary);
+  outline: none;
+}
+
+.textarea.error {
+  border-bottom-color: var(--color-accent);
+}
+
+.errorMessage {
+  margin-top: var(--space-xs);
+  font-size: 13px;
+  color: var(--color-accent);
+}

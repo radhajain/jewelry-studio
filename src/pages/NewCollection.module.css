@@ -1,0 +1,25 @@
+.page {
+  min-height: calc(100vh - 200px);
+  padding: var(--space-4xl) 0;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.title {
+  margin-bottom: var(--space-md);
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+}
