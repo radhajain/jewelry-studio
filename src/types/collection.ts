@@ -45,19 +45,8 @@ export interface Gemstone {
 	id: string;
 	name: string;
 	color: string;
-	shape: GemstoneShape;
 	caratRange: { min: number; max: number };
 }
-
-export type GemstoneShape =
-	| 'round'
-	| 'princess'
-	| 'emerald'
-	| 'oval'
-	| 'pear'
-	| 'marquise'
-	| 'cushion'
-	| 'heart';
 
 export interface BezelDesign {
 	id: string;

@@ -1,16 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useStore } from '../store';
 import { nanoid } from 'nanoid';
-import { PieceType, PieceDesign, BandStyle, ChainStyle } from '../types';
+import {
+	PieceType,
+	PieceDesign,
+	BandStyle,
+	ChainStyle,
+	SettingStyle,
+	GemstoneShape,
+	BraceletStyle,
+} from '../types';
 import { GEMSTONES, getGemstoneById } from '../data/gemstones';
 import Button from '../components/common/Button';
-import PieceRenderer from '../components/pieces/PieceRenderer';
+import PieceRenderer3D from '../components/pieces/PieceRenderer3D';
+import PieceRenderer2D from '../components/pieces/PieceRenderer2D';
 import { MetalSelector } from '../components/common/MetalSelector';
 import { GemstoneSelector } from '../components/common/GemstoneSelector';
 import toast from 'react-hot-toast';
 import styles from './DesignPiece.module.css';
 import { MetalColor, MetalColors } from '../data/metals';
+
+type EarringStyle = 'stud' | 'hoop' | 'drop' | 'chandelier';
+type BandThickness = 'thin' | 'medium' | 'thick';
+
+const SETTING_STYLES: {
+	value: SettingStyle;
+	label: string;
+	description: string;
+}[] = [
+	{ value: 'prong', label: 'Prong', description: 'Metal claws hold the stone' },
+	{
+		value: 'bezel',
+		label: 'Bezel',
+		description: 'Metal rim surrounds the stone',
+	},
+	{
+		value: 'pave',
+		label: 'Pavé',
+		description: 'Small stones set closely together',
+	},
+	{
+		value: 'channel',
+		label: 'Channel',
+		description: 'Stones set between metal rails',
+	},
+	{ value: 'tension', label: 'Tension', description: 'Stone held by pressure' },
+	{
+		value: 'flush',
+		label: 'Flush',
+		description: 'Stone sits level with metal',
+	},
+];
+
+const GEMSTONE_SHAPES: { value: GemstoneShape; label: string }[] = [
+	{ value: 'round', label: 'Round' },
+	{ value: 'oval', label: 'Oval' },
+	{ value: 'princess', label: 'Princess' },
+	{ value: 'emerald', label: 'Emerald' },
+	{ value: 'cushion', label: 'Cushion' },
+	{ value: 'pear', label: 'Pear' },
+	{ value: 'marquise', label: 'Marquise' },
+	{ value: 'heart', label: 'Heart' },
+];
+
+const BRACELET_STYLES: { value: BraceletStyle; label: string }[] = [
+	{ value: 'chain', label: 'Chain' },
+	{ value: 'bangle', label: 'Bangle' },
+	{ value: 'cuff', label: 'Cuff' },
+	{ value: 'tennis', label: 'Tennis' },
+	{ value: 'charm', label: 'Charm' },
+];
 
 const DesignPiece: React.FC = () => {
 	const { collectionId, pieceType } = useParams<{
@@ -59,6 +119,8 @@ const DesignPiece: React.FC = () => {
 		metal: collection?.colors.metals[0] || 'yellow-gold',
 		finish: 'polished',
 	});
+
+	const [viewMode, setViewMode] = useState<'2D' | '3D'>('3D');
 
 	if (collectionId && !collection) {
 		return (
@@ -111,6 +173,42 @@ const DesignPiece: React.FC = () => {
 		setDesign({ ...design, length });
 	};
 
+	const handleEarringStyleChange = (earringStyle: EarringStyle) => {
+		setDesign({ ...design, earringStyle });
+	};
+
+	const handleBandThicknessChange = (bandThickness: BandThickness) => {
+		setDesign({ ...design, bandThickness });
+	};
+
+	const handleSettingStyleChange = (setting: SettingStyle) => {
+		if (design.primaryGemstone) {
+			setDesign({
+				...design,
+				primaryGemstone: {
+					...design.primaryGemstone,
+					setting,
+				},
+			});
+		}
+	};
+
+	const handleGemstoneShapeChange = (shapeOverride: GemstoneShape) => {
+		if (design.primaryGemstone) {
+			setDesign({
+				...design,
+				primaryGemstone: {
+					...design.primaryGemstone,
+					shapeOverride,
+				},
+			});
+		}
+	};
+
+	const handleBraceletStyleChange = (braceletStyle: BraceletStyle) => {
+		setDesign({ ...design, braceletStyle });
+	};
+
 	const handleSave = () => {
 		const newPiece = {
 			collectionId: collection?.id,
@@ -118,10 +216,10 @@ const DesignPiece: React.FC = () => {
 			type: pieceType as PieceType,
 			design: design as PieceDesign,
 			render: {
-				type: '2D' as const,
+				type: '3D' as const,
 				data: {
-					layers: [],
-					viewAngle: 'top' as const,
+					camera: { x: 0, y: 0, z: 2.5 },
+					lights: [],
 				},
 			},
 			isComplete: false,
@@ -183,15 +281,52 @@ const DesignPiece: React.FC = () => {
 				<div className={styles.layout}>
 					{/* Left: Canvas */}
 					<div className={styles.canvas}>
+						<div className={styles.canvasHeader}>
+							<div className={styles.viewToggle}>
+								<Button
+									variant={viewMode === '2D' ? 'primary' : 'secondary'}
+									size="small"
+									onClick={() => setViewMode('2D')}
+								>
+									2D
+								</Button>
+								<Button
+									variant={viewMode === '3D' ? 'primary' : 'secondary'}
+									size="small"
+									onClick={() => setViewMode('3D')}
+								>
+									3D
+								</Button>
+							</div>
+						</div>
 						<div className={styles.canvasInner}>
-							<PieceRenderer
-								piece={{
-									name: pieceName || 'Untitled',
-									type: pieceType as PieceType,
-									design: design as PieceDesign,
-								}}
-								size={500}
-							/>
+							<Suspense
+								fallback={
+									<div className={styles.loading}>
+										Loading {viewMode} view...
+									</div>
+								}
+							>
+								{viewMode === '3D' ? (
+									<PieceRenderer3D
+										piece={{
+											name: pieceName || 'Untitled',
+											type: pieceType as PieceType,
+											design: design as PieceDesign,
+										}}
+										size={500}
+									/>
+								) : (
+									<PieceRenderer2D
+										piece={{
+											name: pieceName || 'Untitled',
+											type: pieceType as PieceType,
+											design: design as PieceDesign,
+										}}
+										size={500}
+									/>
+								)}
+							</Suspense>
 						</div>
 					</div>
 
@@ -260,29 +395,133 @@ const DesignPiece: React.FC = () => {
 							/>
 						</div>
 
+						{/* Gemstone Shape - only show if gemstone is selected */}
+						{design.primaryGemstone && (
+							<div className={styles.section}>
+								<h3 className={styles.sectionTitle}>Gemstone Shape</h3>
+								<p className={styles.sectionDescription}>
+									Override the default shape of your gemstone
+								</p>
+								<div className={styles.optionGrid}>
+									{GEMSTONE_SHAPES.map(({ value, label }) => (
+										<button
+											key={value}
+											className={`${styles.option} ${
+												(design.primaryGemstone?.shapeOverride ||
+													getGemstoneById(
+														design.primaryGemstone?.gemstoneId || ''
+													)?.shape) === value
+													? styles.active
+													: ''
+											}`}
+											onClick={() => handleGemstoneShapeChange(value)}
+										>
+											<div className={styles.optionLabel}>{label}</div>
+										</button>
+									))}
+								</div>
+							</div>
+						)}
+
+						{/* Gemstone Setting - only show if gemstone is selected */}
+						{design.primaryGemstone && (
+							<div className={styles.section}>
+								<h3 className={styles.sectionTitle}>Gemstone Setting</h3>
+								<p className={styles.sectionDescription}>
+									Choose how the gemstone is mounted
+								</p>
+								<div className={styles.optionGrid}>
+									{SETTING_STYLES.map(({ value, label }) => (
+										<button
+											key={value}
+											className={`${styles.option} ${
+												(design.primaryGemstone?.setting || 'prong') === value
+													? styles.active
+													: ''
+											}`}
+											onClick={() => handleSettingStyleChange(value)}
+										>
+											<div className={styles.optionLabel}>{label}</div>
+										</button>
+									))}
+								</div>
+							</div>
+						)}
+
 						{/* Band Details for Rings */}
 						{pieceType === 'ring' && (
+							<>
+								<div className={styles.section}>
+									<h3 className={styles.sectionTitle}>Band Thickness</h3>
+									<p className={styles.sectionDescription}>
+										Choose the thickness of the ring band
+									</p>
+									<div className={styles.optionGrid}>
+										{(['thin', 'medium', 'thick'] as BandThickness[]).map(
+											(thickness) => (
+												<button
+													key={thickness}
+													className={`${styles.option} ${
+														design.bandThickness === thickness
+															? styles.active
+															: ''
+													}`}
+													onClick={() => handleBandThicknessChange(thickness)}
+												>
+													<div className={styles.optionLabel}>{thickness}</div>
+												</button>
+											)
+										)}
+									</div>
+								</div>
+
+								<div className={styles.section}>
+									<h3 className={styles.sectionTitle}>Band Style</h3>
+									<p className={styles.sectionDescription}>
+										Choose the style of the ring band
+									</p>
+									<div className={styles.optionGrid}>
+										{(
+											[
+												'plain',
+												'twisted',
+												'braided',
+												'textured',
+												'split',
+											] as BandStyle[]
+										).map((style) => (
+											<button
+												key={style}
+												className={`${styles.option} ${
+													design.bandStyle === style ? styles.active : ''
+												}`}
+												onClick={() => handleBandStyleChange(style)}
+											>
+												<div className={styles.optionLabel}>{style}</div>
+											</button>
+										))}
+									</div>
+								</div>
+							</>
+						)}
+
+						{/* Earring Style Selection */}
+						{pieceType === 'earring' && (
 							<div className={styles.section}>
-								<h3 className={styles.sectionTitle}>Band Style</h3>
+								<h3 className={styles.sectionTitle}>Earring Style</h3>
 								<p className={styles.sectionDescription}>
-									Choose the style of the ring band
+									Choose the style of your earrings
 								</p>
 								<div className={styles.optionGrid}>
 									{(
-										[
-											'plain',
-											'twisted',
-											'braided',
-											'textured',
-											'split',
-										] as BandStyle[]
+										['stud', 'hoop', 'drop', 'chandelier'] as EarringStyle[]
 									).map((style) => (
 										<button
 											key={style}
 											className={`${styles.option} ${
-												design.bandStyle === style ? styles.active : ''
+												design.earringStyle === style ? styles.active : ''
 											}`}
-											onClick={() => handleBandStyleChange(style)}
+											onClick={() => handleEarringStyleChange(style)}
 										>
 											<div className={styles.optionLabel}>{style}</div>
 										</button>
@@ -291,8 +530,35 @@ const DesignPiece: React.FC = () => {
 							</div>
 						)}
 
-						{/* Chain Details for Necklaces and Bracelets */}
-						{(pieceType === 'necklace' || pieceType === 'bracelet') && (
+						{/* Bracelet Style */}
+						{pieceType === 'bracelet' && (
+							<div className={styles.section}>
+								<h3 className={styles.sectionTitle}>Bracelet Style</h3>
+								<p className={styles.sectionDescription}>
+									Choose the type of bracelet
+								</p>
+								<div className={styles.optionGrid}>
+									{BRACELET_STYLES.map(({ value, label }) => (
+										<button
+											key={value}
+											className={`${styles.option} ${
+												(design.braceletStyle || 'chain') === value
+													? styles.active
+													: ''
+											}`}
+											onClick={() => handleBraceletStyleChange(value)}
+										>
+											<div className={styles.optionLabel}>{label}</div>
+										</button>
+									))}
+								</div>
+							</div>
+						)}
+
+						{/* Chain Details for Necklaces and Chain Bracelets */}
+						{(pieceType === 'necklace' ||
+							(pieceType === 'bracelet' &&
+								design.braceletStyle === 'chain')) && (
 							<>
 								<div className={styles.section}>
 									<h3 className={styles.sectionTitle}>Chain Style</h3>

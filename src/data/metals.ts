@@ -26,24 +26,24 @@ export const metals = [
 	{
 		id: 'platinum',
 		name: 'Platinum',
-		hexStart: '#ECC440',
-		hexEnd: '#DDAC17',
+		hexStart: '#E5E4E2',
+		hexEnd: '#B0B3B0',
 		imageUrl:
 			'https://images.unsplash.com/photo-1656055448515-41d4b1163f4c?q=80&w=2070',
 	},
 	{
 		id: 'silver',
 		name: 'Silver',
-		hexStart: '#FFFA8A',
-		hexEnd: '#FFFF95',
+		hexStart: '#BDC3C7',
+		hexEnd: '#2C3E50',
 		imageUrl:
 			'https://images.unsplash.com/photo-1656055448515-41d4b1163f4c?q=80&w=2070',
 	},
 	{
 		id: 'white-gold',
 		name: 'White Gold',
-		hexStart: '#FFFF4',
-		hexEnd: '#FFFF95',
+		hexStart: '#F3E5AB',
+		hexEnd: '#E1D9D1',
 		imageUrl:
 			'https://images.unsplash.com/photo-1656055448515-41d4b1163f4c?q=80&w=2070',
 	},

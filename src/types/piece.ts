@@ -30,7 +30,7 @@ export interface PieceDesign {
 
 	// Type-specific attributes
 	ringSize?: number;
-	bandThickness?: number;
+	bandThickness?: 'thin' | 'medium' | 'thick';
 	bandStyle?: BandStyle;
 
 	// Earrings
@@ -39,6 +39,7 @@ export interface PieceDesign {
 	// Necklace/Bracelet
 	length?: number;
 	chainStyle?: ChainStyle;
+	braceletStyle?: BraceletStyle;
 
 	// Additional customizations
 	engraving?: string;
@@ -49,9 +50,15 @@ export interface GemstoneSelection {
 	gemstoneId: string; // References Gemstone.id from collection
 	carats: number;
 	position: 'center' | 'accent' | 'side';
+	setting?: SettingStyle; // How the gemstone is mounted
+	shapeOverride?: GemstoneShape; // Override the default shape from gemstone data
 }
 
+export type SettingStyle = 'prong' | 'bezel' | 'pave' | 'channel' | 'tension' | 'flush';
+export type GemstoneShape = 'round' | 'oval' | 'princess' | 'emerald' | 'cushion' | 'pear' | 'marquise' | 'heart';
+
 export type BandStyle = 'plain' | 'twisted' | 'braided' | 'textured' | 'split';
+export type BraceletStyle = 'chain' | 'bangle' | 'cuff' | 'tennis' | 'charm';
 export type ChainStyle =
 	| 'cable'
 	| 'rope'

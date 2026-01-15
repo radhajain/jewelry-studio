@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GEMSTONES } from '../../data/gemstones';
+import { MetalColor, MetalColors } from '../../data/metals';
+import { MaterialSuggestion, suggestMaterials } from '../../utils/anthropic';
 import Button from '../common/Button';
-import { MetalSelector } from '../common/MetalSelector';
 import { GemstoneSelector } from '../common/GemstoneSelector';
-import { suggestMaterials, MaterialSuggestion } from '../../utils/anthropic';
+import { MetalSelector } from '../common/MetalSelector';
 import { Step1Data } from './CollectionWizardStep1';
 import styles from './CollectionWizardStep2.module.css';
-import { Metal, MetalColor, MetalColors } from '../../data/metals';
 
 export interface Step2Data {
 	metals: MetalColor[];

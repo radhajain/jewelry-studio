@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { MoodboardImage } from '../../types';
-import Input from '../common/Input';
-import TextArea from '../common/TextArea';
 import Button from '../common/Button';
-import MoodboardUploader from './MoodboardUploader';
+import Input from '../common/Input';
 import styles from './CollectionWizardStep1.module.css';
+import MoodboardUploader from './MoodboardUploader';
 
 export interface Step1Data {
 	name: string;

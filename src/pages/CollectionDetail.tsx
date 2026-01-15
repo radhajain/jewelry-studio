@@ -110,7 +110,9 @@ const CollectionDetail: React.FC = () => {
 													background: `linear-gradient(45deg, ${metal.hexStart}, ${metal.hexEnd})`,
 												}}
 											/>
-											{metal.name.replace('-', ' ')}
+											<div className={styles.materialLabel}>
+												{metal.name.replace('-', ' ')}
+											</div>
 										</div>
 									) : null;
 								})}
@@ -125,7 +127,9 @@ const CollectionDetail: React.FC = () => {
 												alt={gemstone.name}
 												className={styles.gemstoneIcon}
 											/>
-											{gemstone.name}
+											<div className={styles.materialLabel}>
+												{gemstone.name}
+											</div>
 										</div>
 									) : null;
 								})}
