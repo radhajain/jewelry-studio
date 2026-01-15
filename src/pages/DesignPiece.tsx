@@ -1,5 +1,10 @@
-import React, { useState, useEffect, Suspense } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect, Suspense, useMemo } from 'react';
+import {
+	useParams,
+	useNavigate,
+	Link,
+	useSearchParams,
+} from 'react-router-dom';
 import { useStore } from '../store';
 import { nanoid } from 'nanoid';
 import {
@@ -20,6 +25,7 @@ import { GemstoneSelector } from '../components/common/GemstoneSelector';
 import toast from 'react-hot-toast';
 import styles from './DesignPiece.module.css';
 import { MetalColor, MetalColors } from '../data/metals';
+import { PieceSuggestion } from '../utils/anthropic';
 
 type EarringStyle = 'stud' | 'hoop' | 'drop' | 'chandelier';
 type BandThickness = 'thin' | 'medium' | 'thick';
@@ -78,6 +84,21 @@ const DesignPiece: React.FC = () => {
 		pieceType: string;
 	}>();
 	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+
+	// Parse suggestion from URL if present
+	const suggestion = useMemo((): PieceSuggestion | null => {
+		const suggestionParam = searchParams.get('suggestion');
+		if (suggestionParam) {
+			try {
+				return JSON.parse(suggestionParam) as PieceSuggestion;
+			} catch (e) {
+				console.error('Failed to parse suggestion:', e);
+				return null;
+			}
+		}
+		return null;
+	}, [searchParams]);
 
 	// Scroll to top when component mounts
 	useEffect(() => {
@@ -95,8 +116,12 @@ const DesignPiece: React.FC = () => {
 
 	const isStandalone = !collectionId;
 
-	// Auto-generate piece name based on type and existing pieces
-	const generatePieceName = (): string => {
+	// Use suggestion name or auto-generate piece name
+	const pieceName = useMemo((): string => {
+		if (suggestion?.name) {
+			return suggestion.name;
+		}
+
 		const type = pieceType as PieceType;
 		const typeName = type.charAt(0).toUpperCase() + type.slice(1);
 
@@ -111,14 +136,70 @@ const DesignPiece: React.FC = () => {
 		}
 
 		return `${typeName} ${existingPiecesOfType + 1}`;
+	}, [suggestion, pieceType, isStandalone, standalonePieces, collection]);
+
+	// Initialize design from suggestion or defaults
+	const getInitialDesign = (): Partial<PieceDesign> => {
+		if (suggestion) {
+			// Find gemstone ID by name if provided
+			let gemstoneId: string | undefined;
+			if (suggestion.gemstoneId) {
+				const gemstone = GEMSTONES.find(
+					(g) =>
+						g.id === suggestion.gemstoneId ||
+						g.name.toLowerCase() === suggestion.gemstoneId?.toLowerCase()
+				);
+				gemstoneId = gemstone?.id;
+			}
+
+			return {
+				metal:
+					(suggestion.metal as MetalColor) ||
+					collection?.colors.metals[0] ||
+					'yellow-gold',
+				finish:
+					(suggestion.finish as
+						| 'polished'
+						| 'matte'
+						| 'hammered'
+						| 'brushed') || 'polished',
+				primaryGemstone: gemstoneId
+					? {
+							gemstoneId,
+							carats: 1.0,
+							position: 'center',
+							setting: (suggestion.setting || undefined) as
+								| SettingStyle
+								| undefined,
+							shapeOverride: (suggestion.gemstoneShape || undefined) as
+								| GemstoneShape
+								| undefined,
+					  }
+					: undefined,
+				bandStyle: (suggestion.bandStyle || undefined) as BandStyle | undefined,
+				bandThickness: (suggestion.bandThickness || undefined) as
+					| BandThickness
+					| undefined,
+				earringStyle: (suggestion.earringStyle || undefined) as
+					| EarringStyle
+					| undefined,
+				braceletStyle: (suggestion.braceletStyle || undefined) as
+					| BraceletStyle
+					| undefined,
+				chainStyle: (suggestion.chainStyle || undefined) as
+					| ChainStyle
+					| undefined,
+				length: suggestion.length || undefined,
+			};
+		}
+
+		return {
+			metal: collection?.colors.metals[0] || 'yellow-gold',
+			finish: 'polished',
+		};
 	};
 
-	const pieceName = generatePieceName();
-
-	const [design, setDesign] = useState<Partial<PieceDesign>>({
-		metal: collection?.colors.metals[0] || 'yellow-gold',
-		finish: 'polished',
-	});
+	const [design, setDesign] = useState<Partial<PieceDesign>>(getInitialDesign);
 
 	const [viewMode, setViewMode] = useState<'2D' | '3D'>('3D');
 
@@ -276,6 +357,31 @@ const DesignPiece: React.FC = () => {
 						</>
 					)}
 				</div>
+
+				{/* Suggestion banner */}
+				{suggestion && (
+					<div className={styles.suggestionBanner}>
+						<div className={styles.suggestionBadge}>
+							<svg
+								width="14"
+								height="14"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+							>
+								<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+							</svg>
+							Suggested
+						</div>
+						<div className={styles.suggestionInfo}>
+							<span className={styles.suggestionName}>{suggestion.name}</span>
+							<span className={styles.suggestionDescription}>
+								{suggestion.description}
+							</span>
+						</div>
+					</div>
+				)}
 
 				{/* Layout: Canvas + Controls */}
 				<div className={styles.layout}>
