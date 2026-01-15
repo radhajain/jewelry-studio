@@ -35,17 +35,19 @@ export interface MoodboardImage {
 	description?: string;
 }
 
+export const MetalColors = [
+	'yellow-gold',
+	'white-gold',
+	'rose-gold',
+	'platinum',
+	'silver',
+] as const;
+export type MetalColor = (typeof MetalColors)[number];
+
 export interface ColorPalette {
 	metals: MetalColor[];
 	accents: string[]; // Hex colors
 }
-
-export type MetalColor =
-	| 'yellow-gold'
-	| 'white-gold'
-	| 'rose-gold'
-	| 'platinum'
-	| 'silver';
 
 export interface Gemstone {
 	id: string;

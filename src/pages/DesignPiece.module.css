@@ -1,154 +1,161 @@
 .page {
-  min-height: 100vh;
-  background: var(--color-bg);
+	min-height: 100vh;
+	background: var(--color-bg);
 }
 
 .container {
-  max-width: var(--container-wide);
-  margin: 0 auto;
-  padding: var(--space-xl) var(--space-xl) var(--space-2xl);
+	max-width: var(--container-wide);
+	margin: 0 auto;
+	padding: var(--space-xl) var(--space-xl) var(--space-2xl);
 }
 
 .slug {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-tertiary);
-  margin-bottom: var(--space-2xl);
+	font-size: 11px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-tertiary);
+	margin-bottom: var(--space-2xl);
 }
 
 .header {
-  text-align: center;
-  margin-bottom: var(--space-2xl);
+	text-align: center;
+	margin-bottom: var(--space-2xl);
 }
 
 .subtitle {
-  font-size: 13px;
-  color: var(--color-text-secondary);
+	font-size: 13px;
+	color: var(--color-text-secondary);
 }
 
 .layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3xl);
-  margin-bottom: var(--space-3xl);
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-3xl);
+	margin-bottom: var(--space-3xl);
 }
 
 .canvas {
-  position: sticky;
-  top: var(--space-2xl);
-  align-self: start;
+	position: sticky;
+	top: var(--space-2xl);
+	align-self: start;
 }
 
 .canvasInner {
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: var(--space-lg);
+	background: var(--color-bg-elevated);
+	border: 1px solid var(--color-border);
+	aspect-ratio: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: var(--space-lg);
 }
 
 .placeholder {
-  text-align: center;
-  color: var(--color-text-tertiary);
-  padding: var(--space-3xl);
+	text-align: center;
+	color: var(--color-text-tertiary);
+	padding: var(--space-3xl);
 }
 
 .placeholderIcon {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto var(--space-lg);
-  opacity: 0.3;
+	width: 64px;
+	height: 64px;
+	margin: 0 auto var(--space-lg);
+	opacity: 0.3;
 }
 
 .canvasControls {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-md);
+	display: flex;
+	justify-content: center;
+	gap: var(--space-md);
 }
 
 .controls {
-  /* Right side - design controls */
+	/* Right side - design controls */
 }
 
 .section {
-  margin-bottom: var(--space-3xl);
-  padding-bottom: var(--space-3xl);
-  border-bottom: 1px solid var(--color-border);
+	margin-bottom: var(--space-3xl);
+	padding-bottom: var(--space-3xl);
+	border-bottom: 1px solid var(--color-border);
 }
 
 .section:last-child {
-  border-bottom: none;
+	border-bottom: none;
 }
 
 .sectionTitle {
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-lg);
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--color-text-secondary);
+	margin-bottom: var(--space-lg);
 }
 
 .sectionDescription {
-  font-size: 14px;
-  color: var(--color-text-tertiary);
-  margin-bottom: var(--space-lg);
-  line-height: 1.6;
+	font-size: 14px;
+	color: var(--color-text-tertiary);
+	margin-bottom: var(--space-lg);
+	line-height: 1.6;
 }
 
 .optionGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: var(--space-md);
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	gap: var(--space-md);
 }
 
 .option {
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  padding: var(--space-lg);
-  text-align: center;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+	background: var(--color-bg-elevated);
+	border: 1px solid var(--color-border);
+	padding: var(--space-lg);
+	text-align: center;
+	cursor: pointer;
+	transition: all var(--transition-fast);
 }
 
 .option:hover {
-  border-color: var(--color-text-secondary);
+	border-color: var(--color-text-secondary);
 }
 
 .option.active {
-  border-color: var(--color-text-primary);
-  background: var(--color-bg-secondary);
+	border-color: var(--color-text-primary);
+	background: var(--color-bg-secondary);
 }
 
 .optionLabel {
-  font-size: 13px;
-  color: var(--color-text-secondary);
-  text-transform: capitalize;
-  letter-spacing: 0.02em;
+	font-size: 13px;
+	color: var(--color-text-secondary);
+	text-transform: capitalize;
+	letter-spacing: 0.02em;
 }
 
 .option.active .optionLabel {
-  color: var(--color-text-primary);
+	color: var(--color-text-primary);
 }
 
 .actions {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-md);
-  padding-top: var(--space-2xl);
-  border-top: 1px solid var(--color-border);
+	display: flex;
+	justify-content: center;
+	gap: var(--space-md);
+	padding-top: var(--space-2xl);
+	border-top: 1px solid var(--color-border);
 }
 
 @media (max-width: 1024px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
+	.layout {
+		grid-template-columns: 1fr;
+	}
 
-  .canvas {
-    position: relative;
-    top: 0;
-  }
+	.canvas {
+		position: relative;
+		top: 0;
+	}
+}
+
+.gemstoneImage {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	object-fit: cover;
 }

@@ -1,70 +1,118 @@
 .home {
-  min-height: calc(100vh - 200px);
-  padding: var(--space-xl) 0 var(--space-4xl);
+	min-height: calc(100vh - 200px);
+	padding: var(--space-xl) 0 var(--space-4xl);
 }
 
 .slug {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-tertiary);
-  margin-bottom: var(--space-2xl);
-  padding: 0 var(--space-xl);
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+	font-size: 11px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-tertiary);
+	margin-bottom: var(--space-2xl);
+	padding: 0 var(--space-xl);
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .header {
-  text-align: center;
-  margin-bottom: var(--space-3xl);
+	text-align: center;
+	margin-bottom: var(--space-3xl);
 }
 
 .title {
-  margin-bottom: var(--space-md);
+	margin-bottom: var(--space-md);
 }
 
 .subtitle {
-  color: var(--color-text-secondary);
-  font-size: 15px;
+	color: var(--color-text-secondary);
+	font-size: 15px;
 }
 
 .gallery {
-  max-width: 800px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-2xl);
+	max-width: 800px;
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--space-2xl);
 }
 
 .empty {
-  text-align: center;
-  padding: var(--space-4xl) 0;
+	text-align: center;
+	padding: var(--space-4xl) 0;
 }
 
 .emptyIcon {
-  width: 64px;
-  height: 64px;
-  color: var(--color-text-tertiary);
-  margin: 0 auto var(--space-xl);
-  opacity: 0.4;
+	width: 64px;
+	height: 64px;
+	color: var(--color-text-tertiary);
+	margin: 0 auto var(--space-xl);
+	opacity: 0.4;
 }
 
 .emptyTitle {
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-sm);
-  font-weight: 400;
+	color: var(--color-text-secondary);
+	margin-bottom: var(--space-sm);
+	font-weight: 400;
 }
 
 .emptyText {
-  color: var(--color-text-tertiary);
-  margin-bottom: var(--space-xl);
-  font-size: 15px;
+	color: var(--color-text-tertiary);
+	margin-bottom: var(--space-xl);
+	font-size: 15px;
+}
+
+.skeletonCard {
+	background: var(--color-bg-secondary);
+	border-radius: var(--radius-lg);
+	padding: var(--space-lg);
+	cursor: pointer;
+	transition: all var(--transition-normal);
+	display: flex;
+	flex-direction: column;
+}
+
+.skeletonCard:hover {
+	background: var(--color-bg-tertiary);
+}
+
+.skeletonImage {
+	aspect-ratio: 4 / 5;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--color-bg-primary);
+	border-radius: var(--radius-md);
+	margin-bottom: var(--space-lg);
+}
+
+.skeletonImage svg {
+	width: 48px;
+	height: 48px;
+	color: var(--color-text-tertiary);
+	opacity: 0.4;
+}
+
+.skeletonContent {
+	padding: 0 var(--space-md);
+}
+
+.skeletonTitle {
+	font-size: 16px;
+	font-weight: 400;
+	margin-bottom: var(--space-sm);
+	color: var(--color-text-secondary);
+}
+
+.skeletonText {
+	font-size: 14px;
+	color: var(--color-text-tertiary);
+	line-height: 1.5;
 }
 
 @media (max-width: 768px) {
-  .gallery {
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
-  }
+	.gallery {
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+	}
 }

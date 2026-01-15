@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 import Button from '../components/common/Button';
-import Modal from '../components/common/Modal';
-import { CollectionForm } from '../components/collections/CollectionForm';
 import PieceCard from '../components/pieces/PieceCard';
 import styles from './CollectionDetail.module.css';
 
 const CollectionDetail: React.FC = () => {
 	const { collectionId } = useParams<{ collectionId: string }>();
 	const navigate = useNavigate();
-	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
 	const collection = useStore((state) =>
 		state.collections.find((c) => c.id === collectionId)
@@ -36,16 +33,13 @@ const CollectionDetail: React.FC = () => {
 	return (
 		<div className={styles.page}>
 			<div className={styles.container}>
-				<div className={styles.slug}>Collections / {collection.name}</div>
-
-				{/* Header */}
 				<div className={styles.header}>
-					<p className={styles.subtitle}>{collection.description}</p>
-
+					<div className={styles.slug}>Collections / {collection.name}</div>
 					<div className={styles.actions}>
 						<Button
 							variant="secondary"
-							onClick={() => setIsEditModalOpen(true)}
+							onClick={() => navigate(`/collections/${collectionId}/edit`)}
+							size="small"
 						>
 							Edit Collection
 						</Button>
@@ -54,146 +48,123 @@ const CollectionDetail: React.FC = () => {
 
 				{/* Moodboard */}
 				{collection.moodboard.length > 0 && (
-					<div className={styles.section}>
-						<h2 className={styles.sectionTitle}>Moodboard</h2>
-						<div className={styles.moodboard}>
-							{collection.moodboard.map((image) => (
-								<div key={image.id} className={styles.moodboardImage}>
-									<img src={image.url} alt="Moodboard" />
+					<div className={styles.moodboard}>
+						{collection.moodboard.map((image) => (
+							<div key={image.id} className={styles.moodboardImage}>
+								<img src={image.url} alt="Moodboard" />
+							</div>
+						))}
+					</div>
+				)}
+
+				{/* Collection info sidebar */}
+				<div className={styles.infoSidebar}>
+					<div className={styles.collectionName}>{collection.name}</div>
+					<p className={styles.description}>{collection.description}</p>
+
+					{collection.theme.mood.length > 0 && (
+						<div className={styles.moodSection}>
+							<div className={styles.label}>Mood</div>
+							<div className={styles.moods}>
+								{collection.theme.mood.map((mood) => (
+									<span key={mood} className={styles.mood}>
+										{mood}
+									</span>
+								))}
+							</div>
+						</div>
+					)}
+
+					<div className={styles.materialsSection}>
+						<div className={styles.label}>Materials</div>
+						<div className={styles.metals}>
+							{collection.colors.metals.map((metal) => (
+								<div key={metal} className={styles.metal}>
+									{metal.replace('-', ' ')}
 								</div>
 							))}
 						</div>
 					</div>
-				)}
 
-				{/* Theme */}
-				<div className={styles.section}>
-					<h2 className={styles.sectionTitle}>Theme</h2>
-
-					{collection.theme.mood.length > 0 && (
-						<div className={styles.moods}>
-							{collection.theme.mood.map((mood) => (
-								<span key={mood} className={styles.mood}>
-									{mood}
-								</span>
-							))}
-						</div>
-					)}
-				</div>
-
-				{/* Materials */}
-				<div className={styles.section}>
-					<h2 className={styles.sectionTitle}>Available Materials</h2>
-
-					<div className={styles.metals}>
-						{collection.colors.metals.map((metal) => (
-							<span key={metal} className={styles.metal}>
-								{metal.replace('-', ' ')}
-							</span>
-						))}
+					<div className={styles.actions}>
+						<Button
+							variant="secondary"
+							onClick={() => navigate(`/collections/${collectionId}/edit`)}
+						>
+							Edit Collection
+						</Button>
 					</div>
-				</div>
-
-				{/* Pieces */}
-				<div className={styles.section}>
-					<div className={styles.sectionHeader}>
-						<h2 className={styles.sectionTitle}>Pieces</h2>
-						{collection.pieces.length > 0 && (
-							<div className={styles.pieceActions}>
-								<Button
-									variant="secondary"
-									onClick={() => handleNewPiece('ring')}
-								>
-									Design Ring
-								</Button>
-								<Button
-									variant="secondary"
-									onClick={() => handleNewPiece('earring')}
-								>
-									Design Earring
-								</Button>
-								<Button
-									variant="secondary"
-									onClick={() => handleNewPiece('bracelet')}
-								>
-									Design Bracelet
-								</Button>
-								<Button
-									variant="secondary"
-									onClick={() => handleNewPiece('necklace')}
-								>
-									Design Necklace
-								</Button>
-							</div>
-						)}
-					</div>
-
-					{collection.pieces.length > 0 ? (
-						<div className={styles.pieces}>
-							{collection.pieces.map((piece) => (
-								<PieceCard
-									key={piece.id}
-									piece={piece}
-									onClick={() =>
-										navigate(`/collections/${collectionId}/piece/${piece.id}`)
-									}
-								/>
-							))}
-						</div>
-					) : (
-						<div className={styles.emptyPieces}>
-							<p className={styles.emptyPiecesText}>
-								No pieces in this collection yet
-							</p>
-							<div
-								style={{
-									display: 'flex',
-									gap: 'var(--space-md)',
-									justifyContent: 'center',
-									flexWrap: 'wrap',
-								}}
-							>
-								<Button
-									variant="secondary"
-									onClick={() => handleNewPiece('ring')}
-								>
-									Design Ring
-								</Button>
-								<Button
-									variant="secondary"
-									onClick={() => handleNewPiece('earring')}
-								>
-									Design Earring
-								</Button>
-								<Button
-									variant="secondary"
-									onClick={() => handleNewPiece('bracelet')}
-								>
-									Design Bracelet
-								</Button>
-								<Button
-									variant="secondary"
-									onClick={() => handleNewPiece('necklace')}
-								>
-									Design Necklace
-								</Button>
-							</div>
-						</div>
-					)}
 				</div>
 			</div>
 
-			{/* Edit Modal */}
-			<Modal
-				isOpen={isEditModalOpen}
-				onClose={() => setIsEditModalOpen(false)}
-				title="Edit Collection"
-			>
-				<CollectionForm
-					collectionId={collectionId}
-					onSuccess={() => setIsEditModalOpen(false)}
-				/>
-			</Modal>
+			{/* Pieces */}
+			<div className={styles.section}>
+				<div className={styles.sectionHeader}>
+					<h2 className={styles.sectionTitle}>Pieces</h2>
+					{collection.pieces.length > 0 && (
+						<div className={styles.pieceActions}>
+							<Button
+								variant="secondary"
+								onClick={() => handleNewPiece('ring')}
+							>
+								Design Ring
+							</Button>
+							<Button
+								variant="secondary"
+								onClick={() => handleNewPiece('earring')}
+							>
+								Design Earring
+							</Button>
+							<Button
+								variant="secondary"
+								onClick={() => handleNewPiece('bracelet')}
+							>
+								Design Bracelet
+							</Button>
+							<Button
+								variant="secondary"
+								onClick={() => handleNewPiece('necklace')}
+							>
+								Design Necklace
+							</Button>
+						</div>
+					)}
+				</div>
+
+				{collection.pieces.length > 0 ? (
+					<div className={styles.pieces}>
+						{collection.pieces.map((piece) => (
+							<PieceCard
+								key={piece.id}
+								piece={piece}
+								onClick={() =>
+									navigate(`/collections/${collectionId}/piece/${piece.id}`)
+								}
+							/>
+						))}
+					</div>
+				) : (
+					<div className={styles.pieces}>
+						{['ring', 'earring', 'necklace', 'bracelet'].map((type) => (
+							<div
+								key={type}
+								className={styles.skeletonPiece}
+								onClick={() => handleNewPiece(type)}
+							>
+								<div className={styles.skeletonPieceImage}>
+									<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4v16m8-8H4" />
+									</svg>
+								</div>
+								<div className={styles.skeletonPieceContent}>
+									<div className={styles.skeletonPieceTitle}>New {type}</div>
+									<div className={styles.skeletonPieceText}>Click to design</div>
+								</div>
+							</div>
+						))}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

@@ -1,45 +1,49 @@
 .header {
-  background-color: var(--color-bg-elevated);
-  border-bottom: 1px solid var(--color-border);
-  padding: var(--space-md) 0;
+	background-color: var(--color-bg-elevated);
+	border-bottom: 1px solid var(--color-border);
+	padding: var(--space-md) 0;
 }
 
 .container {
-  max-width: var(--container-wide);
-  margin: 0 auto;
-  padding: 0 var(--space-xl);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: center;
+	padding: 0 var(--space-xl);
+}
+
+.logoImage {
+	height: 40px;
+	width: auto;
 }
 
 .logo {
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-primary);
-  transition: color var(--transition-fast);
+	font-size: 11px;
+	font-weight: 400;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-primary);
+	transition: color var(--transition-fast);
+	text-align: center;
 }
 
 .logo:hover {
-  color: var(--color-text-secondary);
+	color: var(--color-text-secondary);
 }
 
 .nav {
-  display: flex;
-  gap: var(--space-lg);
+	display: flex;
+	gap: var(--space-lg);
 }
 
 .navLink {
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-  transition: color var(--transition-fast);
+	font-size: 11px;
+	font-weight: 400;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--color-text-secondary);
+	transition: color var(--transition-fast);
 }
 
 .navLink:hover {
-  color: var(--color-text-primary);
+	color: var(--color-text-primary);
 }

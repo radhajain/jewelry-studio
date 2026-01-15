@@ -2,7 +2,7 @@ import { MetalColor } from './collection';
 
 export interface JewelryPiece {
   id: string;
-  collectionId: string;
+  collectionId?: string; // Optional - pieces can be standalone
   name: string;
   type: PieceType;
   createdAt: string;

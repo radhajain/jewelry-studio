@@ -67,6 +67,56 @@
   font-size: 13px;
 }
 
+.skeletonCard {
+  background: var(--color-bg-secondary);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.skeletonCard:hover {
+  border-color: var(--color-text-secondary);
+  background: var(--color-bg-tertiary);
+}
+
+.skeletonImage {
+  aspect-ratio: 4 / 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+}
+
+.skeletonImage svg {
+  width: 48px;
+  height: 48px;
+  color: var(--color-text-tertiary);
+  opacity: 0.4;
+}
+
+.skeletonContent {
+  padding: 0 var(--space-md);
+}
+
+.skeletonTitle {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-secondary);
+}
+
+.skeletonText {
+  font-size: 14px;
+  color: var(--color-text-tertiary);
+  line-height: 1.5;
+}
+
 @media (max-width: 768px) {
   .gallery {
     grid-template-columns: 1fr;

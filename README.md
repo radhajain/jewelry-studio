@@ -1,4 +1,50 @@
-# Getting Started with Create React App
+# Jewelry Studio
+
+A jewelry design application built with React and TypeScript.
+
+## Recent Updates
+
+### Standalone Pieces
+- Pieces can now be created independently without being part of a collection
+- When creating a piece within a collection, it will automatically suggest the collection's materials as defaults
+- Navigate to `/design/:pieceType` to create standalone pieces
+
+### Collection Creation Wizard
+The collection creation flow has been redesigned as a 2-step wizard:
+
+**Step 1: Vision & Inspiration**
+- Collection name and description
+- Moodboard image uploads
+- Style keywords
+
+**Step 2: Material Selection with AI**
+- AI-powered material suggestions using Anthropic's Claude
+- The AI analyzes your collection's name, description, and style keywords to suggest appropriate metals and gemstones
+- You can apply suggestions automatically or make manual selections
+
+### Empty State Improvements
+- Empty states now display interactive skeleton previews
+- Click on skeleton cards to immediately create new collections or pieces
+- More intuitive onboarding experience
+
+## Setup
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Configure Anthropic API (for AI material suggestions):
+   - Copy `.env.example` to `.env`
+   - Add your Anthropic API key: `REACT_APP_ANTHROPIC_API_KEY=your_key_here`
+   - Get your API key from: https://console.anthropic.com/
+
+3. Start the development server:
+```bash
+npm start
+```
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

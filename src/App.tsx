@@ -5,8 +5,10 @@ import AppLayout from './components/layout/AppLayout';
 import Home from './pages/Home';
 import Pieces from './pages/Pieces';
 import NewCollection from './pages/NewCollection';
+import EditCollection from './pages/EditCollection';
 import CollectionDetail from './pages/CollectionDetail';
 import DesignPiece from './pages/DesignPiece';
+import SelectPieceType from './pages/SelectPieceType';
 
 function App() {
   return (
@@ -18,8 +20,11 @@ function App() {
           <Route path="collections">
             <Route path="new" element={<NewCollection />} />
             <Route path=":collectionId" element={<CollectionDetail />} />
+            <Route path=":collectionId/edit" element={<EditCollection />} />
             <Route path=":collectionId/design/:pieceType" element={<DesignPiece />} />
           </Route>
+          <Route path="design/select" element={<SelectPieceType />} />
+          <Route path="design/:pieceType" element={<DesignPiece />} />
         </Route>
       </Routes>
       <Toaster

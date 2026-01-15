@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { MetalColor, BezelDesign, MoodboardImage } from '../../types';
+import { BezelDesign } from '../../types';
 import { useStore } from '../../store';
-import { PRESET_GEMSTONES } from '../../data/gemstones';
-import Input from '../common/Input';
-import TextArea from '../common/TextArea';
-import Button from '../common/Button';
-import MoodboardUploader from './MoodboardUploader';
+import { CollectionWizardStep1, Step1Data } from './CollectionWizardStep1';
+import { CollectionWizardStep2, Step2Data } from './CollectionWizardStep2';
 import styles from './CollectionForm.module.css';
-
-const METALS: MetalColor[] = [
-  'yellow-gold',
-  'white-gold',
-  'rose-gold',
-  'platinum',
-  'silver',
-];
 
 interface CollectionFormProps {
   collectionId?: string;
@@ -36,275 +25,92 @@ export const CollectionForm: React.FC<CollectionFormProps> = ({
 
   const isEditing = !!collectionId && !!existingCollection;
 
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    theme: {
-      primaryColor: '#1C1917',
-      secondaryColor: '#78716C',
-      accentColor: '#D6D3D1',
-      mood: [] as string[],
-    },
-    moodboard: [] as MoodboardImage[],
-    colors: {
-      metals: ['yellow-gold'] as MetalColor[],
-      accents: ['#1C1917', '#78716C'],
-    },
-    gemstoneIds: [] as string[],
-    bezelDesigns: [] as BezelDesign[],
-  });
-
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [moodInput, setMoodInput] = useState('');
+  // Wizard state
+  const [currentStep, setCurrentStep] = useState<1 | 2>(1);
+  const [step1Data, setStep1Data] = useState<Step1Data | null>(null);
 
   // Load existing collection data when editing
   useEffect(() => {
     if (existingCollection) {
-      setFormData({
+      setStep1Data({
         name: existingCollection.name,
         description: existingCollection.description,
-        theme: existingCollection.theme,
         moodboard: existingCollection.moodboard,
-        colors: existingCollection.colors,
-        gemstoneIds: existingCollection.gemstoneIds,
-        bezelDesigns: existingCollection.bezelDesigns,
+        moodKeywords: existingCollection.theme.mood,
       });
     }
   }, [existingCollection]);
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = 'Collection name is required';
-    }
-
-    if (!formData.description.trim()) {
-      newErrors.description = 'Description is required';
-    }
-
-    if (formData.moodboard.length === 0) {
-      newErrors.moodboard = 'Please upload at least one moodboard image';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const handleStep1Complete = (data: Step1Data) => {
+    setStep1Data(data);
+    setCurrentStep(2);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleStep2Complete = (data: Step2Data) => {
+    if (!step1Data) return;
 
-    if (!validate()) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
+    const collectionData = {
+      name: step1Data.name,
+      description: step1Data.description,
+      theme: {
+        primaryColor: '#1C1917',
+        secondaryColor: '#78716C',
+        accentColor: '#D6D3D1',
+        mood: step1Data.moodKeywords,
+      },
+      moodboard: step1Data.moodboard,
+      colors: {
+        metals: data.metals,
+        accents: ['#1C1917', '#78716C'],
+      },
+      gemstoneIds: data.gemstoneIds,
+      bezelDesigns: [] as BezelDesign[],
+    };
 
     if (isEditing) {
-      updateCollection(collectionId!, formData);
+      updateCollection(collectionId!, collectionData);
       toast.success('Collection updated successfully!');
       if (onSuccess) {
         onSuccess();
       }
     } else {
-      createCollection(formData);
+      createCollection(collectionData);
       toast.success('Collection created successfully!');
       navigate('/');
     }
   };
 
-  const addMood = () => {
-    if (moodInput.trim() && !formData.theme.mood.includes(moodInput.trim())) {
-      setFormData({
-        ...formData,
-        theme: {
-          ...formData.theme,
-          mood: [...formData.theme.mood, moodInput.trim()],
-        },
-      });
-      setMoodInput('');
+  const handleCancel = () => {
+    if (onSuccess) {
+      onSuccess();
+    } else {
+      navigate(-1);
     }
   };
 
-  const removeMood = (mood: string) => {
-    setFormData({
-      ...formData,
-      theme: {
-        ...formData.theme,
-        mood: formData.theme.mood.filter((m) => m !== mood),
-      },
-    });
-  };
-
-  const toggleMetal = (metal: MetalColor) => {
-    const metals = formData.colors.metals.includes(metal)
-      ? formData.colors.metals.filter((m) => m !== metal)
-      : [...formData.colors.metals, metal];
-
-    setFormData({
-      ...formData,
-      colors: { ...formData.colors, metals },
-    });
-  };
-
-  const toggleGemstone = (gemstoneId: string) => {
-    const gemstoneIds = formData.gemstoneIds.includes(gemstoneId)
-      ? formData.gemstoneIds.filter((id) => id !== gemstoneId)
-      : [...formData.gemstoneIds, gemstoneId];
-
-    setFormData({
-      ...formData,
-      gemstoneIds,
-    });
-  };
-
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      {/* Basic Information */}
-      <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>Basic Information</h3>
-        <div className={styles.fields}>
-          <Input
-            label="Collection Name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="e.g., Spring 2026 Collection"
-            error={errors.name}
-            required
-          />
-
-          <TextArea
-            label="Description"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-            placeholder="Describe the inspiration and vision for this collection..."
-            error={errors.description}
-            rows={4}
-            required
-          />
-        </div>
-      </section>
-
-      {/* Moodboard */}
-      <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>Moodboard</h3>
-        <p className={styles.sectionDescription}>
-          Upload images that capture the aesthetic and inspiration for your collection
-        </p>
-        <MoodboardUploader
-          images={formData.moodboard}
-          onImagesChange={(moodboard) =>
-            setFormData({ ...formData, moodboard })
-          }
+    <div className={styles.form}>
+      {currentStep === 1 ? (
+        <CollectionWizardStep1
+          initialData={step1Data || undefined}
+          onNext={handleStep1Complete}
+          onCancel={handleCancel}
         />
-        {errors.moodboard && <p className={styles.error}>{errors.moodboard}</p>}
-      </section>
-
-      {/* Theme */}
-      <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>Theme</h3>
-
-        {/* Mood Keywords */}
-        <div className={styles.moodKeywords}>
-          <label className={styles.label}>Mood Keywords</label>
-          <div className={styles.moodInputGroup}>
-            <input
-              type="text"
-              value={moodInput}
-              onChange={(e) => setMoodInput(e.target.value)}
-              onKeyPress={(e) =>
-                e.key === 'Enter' && (e.preventDefault(), addMood())
-              }
-              placeholder="e.g., elegant, bold, delicate"
-              className={styles.moodInput}
-            />
-            <Button type="button" onClick={addMood} variant="secondary">
-              Add
-            </Button>
-          </div>
-          {formData.theme.mood.length > 0 && (
-            <div className={styles.moodTags}>
-              {formData.theme.mood.map((mood) => (
-                <span key={mood} className={styles.moodTag}>
-                  {mood}
-                  <button
-                    type="button"
-                    onClick={() => removeMood(mood)}
-                    className={styles.removeButton}
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Colors & Materials */}
-      <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>Available Materials</h3>
-
-        {/* Metal Selection */}
-        <div className={styles.subsection}>
-          <label className={styles.label}>Metals</label>
-          <div className={styles.metalGrid}>
-            {METALS.map((metal) => (
-              <button
-                key={metal}
-                type="button"
-                onClick={() => toggleMetal(metal)}
-                className={`${styles.metalButton} ${
-                  formData.colors.metals.includes(metal) ? styles.active : ''
-                }`}
-              >
-                {metal.replace('-', ' ')}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Gemstone Selection */}
-        <div className={styles.subsection}>
-          <label className={styles.label}>Gemstones</label>
-          <p className={styles.sectionDescription}>
-            Select gemstones to include in your collection palette
-          </p>
-          <div className={styles.gemstoneGrid}>
-            {PRESET_GEMSTONES.map((gemstone) => (
-              <button
-                key={gemstone.id}
-                type="button"
-                onClick={() => toggleGemstone(gemstone.id)}
-                className={`${styles.gemstoneButton} ${
-                  formData.gemstoneIds.includes(gemstone.id) ? styles.active : ''
-                }`}
-              >
-                <div
-                  className={styles.gemstoneColorPreview}
-                  style={{ backgroundColor: gemstone.color }}
-                />
-                <div className={styles.gemstoneName}>{gemstone.name}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Actions */}
-      <div className={styles.actions}>
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={() => (onSuccess ? onSuccess() : navigate(-1))}
-        >
-          Cancel
-        </Button>
-        <Button type="submit" variant="primary">
-          {isEditing ? 'Save Changes' : 'Create Collection'}
-        </Button>
-      </div>
-    </form>
+      ) : (
+        <CollectionWizardStep2
+          step1Data={step1Data!}
+          initialData={
+            existingCollection
+              ? {
+                  metals: existingCollection.colors.metals,
+                  gemstoneIds: existingCollection.gemstoneIds,
+                }
+              : undefined
+          }
+          onComplete={handleStep2Complete}
+          onBack={() => setCurrentStep(1)}
+        />
+      )}
+    </div>
   );
 };

@@ -1,0 +1,18 @@
+.page {
+	min-height: calc(100vh - 200px);
+	padding: var(--space-xl) 0 var(--space-4xl);
+}
+
+.container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 0 var(--space-xl);
+}
+
+.slug {
+	font-size: 11px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-tertiary);
+	margin-bottom: var(--space-2xl);
+}

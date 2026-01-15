@@ -1,9 +1,10 @@
 import { StateCreator } from 'zustand';
 import { nanoid } from 'nanoid';
-import { Collection } from '../../types';
+import { Collection, JewelryPiece } from '../../types';
 
 export interface CollectionsSlice {
   collections: Collection[];
+  standalonePieces: JewelryPiece[]; // Pieces not part of any collection
   activeCollectionId: string | null;
 
   // Actions
@@ -12,10 +13,14 @@ export interface CollectionsSlice {
   deleteCollection: (id: string) => void;
   setActiveCollection: (id: string | null) => void;
   getCollection: (id: string) => Collection | undefined;
+  createStandalonePiece: (piece: Omit<JewelryPiece, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  updateStandalonePiece: (id: string, updates: Partial<JewelryPiece>) => void;
+  deleteStandalonePiece: (id: string) => void;
 }
 
 export const createCollectionsSlice: StateCreator<CollectionsSlice> = (set, get) => ({
   collections: [],
+  standalonePieces: [],
   activeCollectionId: null,
 
   createCollection: (collectionData) => {
@@ -56,5 +61,34 @@ export const createCollectionsSlice: StateCreator<CollectionsSlice> = (set, get)
 
   getCollection: (id) => {
     return get().collections.find((c) => c.id === id);
+  },
+
+  createStandalonePiece: (pieceData) => {
+    const newPiece: JewelryPiece = {
+      ...pieceData,
+      id: nanoid(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    set((state) => ({
+      standalonePieces: [...state.standalonePieces, newPiece],
+    }));
+  },
+
+  updateStandalonePiece: (id, updates) => {
+    set((state) => ({
+      standalonePieces: state.standalonePieces.map((piece) =>
+        piece.id === id
+          ? { ...piece, ...updates, updatedAt: new Date().toISOString() }
+          : piece
+      ),
+    }));
+  },
+
+  deleteStandalonePiece: (id) => {
+    set((state) => ({
+      standalonePieces: state.standalonePieces.filter((p) => p.id !== id),
+    }));
   },
 });

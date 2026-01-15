@@ -7,14 +7,23 @@ import styles from './Pieces.module.css';
 const Pieces: React.FC = () => {
 	const navigate = useNavigate();
 	const collections = useStore((state) => state.collections);
+	const standalonePieces = useStore((state) => state.standalonePieces);
 
-	// Flatten all pieces from all collections
-	const allPieces = collections.flatMap((collection) =>
+	// Flatten all pieces from all collections and standalone pieces
+	const collectionPieces = collections.flatMap((collection) =>
 		collection.pieces.map((piece) => ({
 			...piece,
 			collectionName: collection.name,
 		}))
 	);
+
+	const allPieces = [
+		...standalonePieces.map((piece) => ({
+			...piece,
+			collectionName: undefined as string | undefined,
+		})),
+		...collectionPieces,
+	];
 
 	return (
 		<div className={styles.page}>
@@ -33,18 +42,37 @@ const Pieces: React.FC = () => {
 										)
 									}
 								/>
-								<div className={styles.collectionLabel}>
-									from {piece.collectionName}
-								</div>
+								{piece.collectionName && (
+									<div className={styles.collectionLabel}>
+										from {piece.collectionName}
+									</div>
+								)}
 							</div>
 						))}
 					</div>
 				) : (
-					<div className={styles.empty}>
-						<p className={styles.emptyText}>No pieces created yet</p>
-						<p className={styles.emptyHint}>
-							Create a collection and start designing pieces
-						</p>
+					<div className={styles.gallery}>
+						<div
+							className={styles.skeletonCard}
+							onClick={() => navigate('/design/select')}
+						>
+							<div className={styles.skeletonImage}>
+								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={1}
+										d="M12 4v16m8-8H4"
+									/>
+								</svg>
+							</div>
+							<div className={styles.skeletonContent}>
+								<div className={styles.skeletonTitle}>New Piece</div>
+								<div className={styles.skeletonText}>
+									Click to create a standalone piece
+								</div>
+							</div>
+						</div>
 					</div>
 				)}
 			</div>

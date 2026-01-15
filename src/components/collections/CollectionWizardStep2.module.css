@@ -1,0 +1,235 @@
+.container {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.header {
+	text-align: center;
+	margin-bottom: var(--space-3xl);
+}
+
+.title {
+	font-size: 20px;
+	font-weight: 400;
+	margin-bottom: var(--space-sm);
+	color: var(--color-text-primary);
+}
+
+.subtitle {
+	font-size: 15px;
+	color: var(--color-text-secondary);
+}
+
+.content {
+	margin-bottom: var(--space-2xl);
+}
+
+.section {
+	margin-bottom: var(--space-3xl);
+}
+
+.sectionTitle {
+	font-size: 16px;
+	font-weight: 400;
+	margin-bottom: var(--space-md);
+	color: var(--color-text-primary);
+}
+
+.sectionDescription {
+	font-size: 14px;
+	color: var(--color-text-secondary);
+	margin-bottom: var(--space-lg);
+	line-height: 1.5;
+}
+
+/* AI Suggestions */
+.aiSection {
+	margin-bottom: var(--space-3xl);
+}
+
+.loadingState {
+	text-align: center;
+	padding: var(--space-2xl);
+	background: var(--color-bg-secondary);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--color-border);
+}
+
+.spinner {
+	width: 32px;
+	height: 32px;
+	margin: 0 auto var(--space-md);
+	border: 3px solid var(--color-border);
+	border-top-color: var(--color-text-secondary);
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.loadingState p {
+	font-size: 14px;
+	color: var(--color-text-secondary);
+}
+
+.errorState {
+	padding: var(--space-lg);
+	background: var(--color-bg-secondary);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--color-border);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+	align-items: center;
+}
+
+.errorMessage {
+	font-size: 14px;
+	color: var(--color-error);
+	text-align: center;
+}
+
+.suggestionBox {
+	padding: var(--space-xl);
+	background: var(--color-bg-secondary);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--color-border);
+}
+
+.suggestionHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--space-md);
+}
+
+.suggestionTitle {
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--color-text-primary);
+}
+
+.dismissButton {
+	background: none;
+	border: none;
+	color: var(--color-text-tertiary);
+	font-size: 24px;
+	line-height: 1;
+	cursor: pointer;
+	padding: 0;
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: color var(--transition-fast);
+}
+
+.dismissButton:hover {
+	color: var(--color-text-primary);
+}
+
+.reasoning {
+	font-size: 14px;
+	color: var(--color-text-secondary);
+	line-height: 1.6;
+	margin-bottom: var(--space-lg);
+	font-style: italic;
+}
+
+.suggestionActions {
+	display: flex;
+	gap: var(--space-sm);
+}
+
+/* Metal Grid */
+.metalGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	gap: var(--space-md);
+}
+
+.metalButton {
+	padding: var(--space-md) var(--space-lg);
+	background: var(--color-bg-primary);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	font-size: 14px;
+	color: var(--color-text-secondary);
+	cursor: pointer;
+	transition: all var(--transition-fast);
+	text-transform: capitalize;
+}
+
+.metalButton:hover {
+	border-color: var(--color-text-secondary);
+	background: var(--color-bg-secondary);
+}
+
+.metalButton.active {
+	background: var(--color-bg-tertiary);
+	color: var(--color-text-primary);
+	border-color: var(--color-text-primary);
+}
+
+/* Gemstone Grid */
+.gemstoneGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	gap: var(--space-md);
+}
+
+.gemstoneButton {
+	padding: var(--space-md);
+	background: var(--color-bg-primary);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	cursor: pointer;
+	transition: all var(--transition-fast);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-sm);
+}
+
+.gemstoneButton:hover {
+	border-color: var(--color-text-secondary);
+	background: var(--color-bg-secondary);
+}
+
+.gemstoneButton.active {
+	border-color: var(--color-text-primary);
+	border-width: 2px;
+}
+
+.gemstoneImage {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 1px solid var(--color-border);
+}
+
+.gemstoneName {
+	font-size: 13px;
+	color: var(--color-text-secondary);
+	text-align: center;
+}
+
+.gemstoneButton.active .gemstoneName {
+	color: var(--color-text-primary);
+	font-weight: 500;
+}
+
+/* Actions */
+.actions {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--space-md);
+	padding-top: var(--space-xl);
+	border-top: 1px solid var(--color-border);
+}
