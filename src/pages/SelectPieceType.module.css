@@ -14,7 +14,8 @@
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 	color: var(--color-text-tertiary);
-	margin-bottom: var(--space-2xl);
+	text-align: left;
+	margin-bottom: var(--space-lg);
 }
 
 .header {
@@ -42,9 +43,9 @@
 
 .typeCard {
 	background: var(--color-bg-secondary);
-	border: 2px dashed var(--color-border);
+	border: 1px solid var(--color-border);
 	border-radius: var(--radius-lg);
-	padding: var(--space-4xl) var(--space-lg);
+	padding: var(--space-xl) var(--space-lg);
 	cursor: pointer;
 	transition: all var(--transition-normal);
 	display: flex;

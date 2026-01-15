@@ -1,6 +1,6 @@
 import { GemstoneShape } from '../types';
 
-export interface PresetGemstone {
+export interface Gemstone {
 	id: string;
 	name: string;
 	color: string;
@@ -9,7 +9,7 @@ export interface PresetGemstone {
 	caratRange: { min: number; max: number };
 }
 
-export const PRESET_GEMSTONES: PresetGemstone[] = [
+export const GEMSTONES: Gemstone[] = [
 	{
 		id: 'amber',
 		name: 'Amber',
@@ -237,6 +237,6 @@ export const PRESET_GEMSTONES: PresetGemstone[] = [
 ];
 
 // Helper function to get gemstone by ID
-export const getGemstoneById = (id: string): PresetGemstone | undefined => {
-	return PRESET_GEMSTONES.find((gem) => gem.id === id);
+export const getGemstoneById = (id: string): Gemstone | undefined => {
+	return GEMSTONES.find((gem) => gem.id === id);
 };

@@ -128,6 +128,9 @@
 	color: var(--color-text-secondary);
 	text-transform: capitalize;
 	letter-spacing: 0.02em;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .option.active .optionLabel {

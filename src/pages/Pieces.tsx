@@ -29,52 +29,46 @@ const Pieces: React.FC = () => {
 		<div className={styles.page}>
 			<div className={styles.container}>
 				<div className={styles.slug}>Pieces</div>
-
-				{allPieces.length > 0 ? (
-					<div className={styles.gallery}>
-						{allPieces.map((piece) => (
-							<div key={piece.id} className={styles.pieceWrapper}>
-								<PieceCard
-									piece={piece}
-									onClick={() =>
-										navigate(
-											`/collections/${piece.collectionId}/piece/${piece.id}`
-										)
-									}
-								/>
-								{piece.collectionName && (
-									<div className={styles.collectionLabel}>
-										from {piece.collectionName}
-									</div>
-								)}
-							</div>
-						))}
-					</div>
-				) : (
-					<div className={styles.gallery}>
-						<div
-							className={styles.skeletonCard}
-							onClick={() => navigate('/design/select')}
-						>
-							<div className={styles.skeletonImage}>
-								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth={1}
-										d="M12 4v16m8-8H4"
-									/>
-								</svg>
-							</div>
-							<div className={styles.skeletonContent}>
-								<div className={styles.skeletonTitle}>New Piece</div>
-								<div className={styles.skeletonText}>
-									Click to create a standalone piece
+				<div className={styles.gallery}>
+					{allPieces.map((piece) => (
+						<div key={piece.id} className={styles.pieceWrapper}>
+							<PieceCard
+								piece={piece}
+								onClick={() =>
+									navigate(
+										`/collections/${piece.collectionId}/piece/${piece.id}`
+									)
+								}
+							/>
+							{piece.collectionName && (
+								<div className={styles.collectionLabel}>
+									from {piece.collectionName}
 								</div>
+							)}
+						</div>
+					))}
+					<div
+						className={styles.skeletonCard}
+						onClick={() => navigate('/design/select')}
+					>
+						<div className={styles.skeletonImage}>
+							<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth={1}
+									d="M12 4v16m8-8H4"
+								/>
+							</svg>
+						</div>
+						<div className={styles.skeletonContent}>
+							<div className={styles.skeletonTitle}>New Piece</div>
+							<div className={styles.skeletonText}>
+								Click to create a standalone piece
 							</div>
 						</div>
 					</div>
-				)}
+				</div>
 			</div>
 		</div>
 	);

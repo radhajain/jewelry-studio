@@ -18,7 +18,7 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
 		navigate(`/collections/${collection.id}`);
 	};
 
-	const coverImage = collection.moodboard[0]?.thumbnail;
+	const coverImage = collection.moodboard[0]?.url;
 
 	return (
 		<Card hover onClick={handleClick} className={styles.card}>

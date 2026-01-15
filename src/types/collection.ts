@@ -1,3 +1,4 @@
+import { MetalColor } from '../data/metals';
 import { JewelryPiece } from './piece';
 
 export interface Collection {
@@ -34,15 +35,6 @@ export interface MoodboardImage {
 	uploadedAt: string;
 	description?: string;
 }
-
-export const MetalColors = [
-	'yellow-gold',
-	'white-gold',
-	'rose-gold',
-	'platinum',
-	'silver',
-] as const;
-export type MetalColor = (typeof MetalColors)[number];
 
 export interface ColorPalette {
 	metals: MetalColor[];

@@ -23,18 +23,12 @@
 	margin-bottom: var(--space-2xl);
 }
 
-.topSection {
-	display: grid;
-	grid-template-columns: 2fr 1fr;
-	gap: var(--space-3xl);
-	margin-bottom: var(--space-4xl);
-}
-
 .moodboard {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: var(--space-sm);
 	align-self: start;
+	margin-bottom: var(--space-4xl);
 }
 
 .moodboardImage {
@@ -49,8 +43,7 @@
 	object-fit: cover;
 }
 
-.infoSidebar {
-	position: sticky;
+.infoCard {
 	top: var(--space-2xl);
 	align-self: start;
 }
@@ -59,8 +52,7 @@
 	font-size: 18px;
 	font-weight: 400;
 	letter-spacing: -0.01em;
-	margin-bottom: var(--space-lg);
-	color: var(--color-text-primary);
+	color: var(--color-text-tertiary);
 }
 
 .description {
@@ -72,6 +64,27 @@
 	font-family: var(--font-serif);
 }
 
+.metadataSection {
+	margin-bottom: var(--space-lg);
+	padding-bottom: var(--space-lg);
+	border-bottom: 1px solid var(--color-border);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+.metadataItem {
+	font-size: 13px;
+	color: var(--color-text-secondary);
+}
+
+.metadataLabel {
+	color: var(--color-text-tertiary);
+	font-size: 11px;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
 .label {
 	font-size: 11px;
 	letter-spacing: 0.1em;
@@ -81,14 +94,14 @@
 }
 
 .moodSection {
-	margin-bottom: var(--space-2xl);
-	padding-bottom: var(--space-2xl);
+	margin-bottom: var(--space-lg);
+	padding-bottom: var(--space-lg);
 	border-bottom: 1px solid var(--color-border);
 }
 
 .materialsSection {
-	margin-bottom: var(--space-2xl);
-	padding-bottom: var(--space-2xl);
+	margin-bottom: var(--space-lg);
+	padding-bottom: var(--space-lg);
 	border-bottom: 1px solid var(--color-border);
 }
 
@@ -104,17 +117,19 @@
 	letter-spacing: 0.01em;
 }
 
-.metals {
+.materials {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-xs);
 }
 
-.metal {
+.material {
 	font-size: 13px;
 	text-transform: capitalize;
 	color: var(--color-text-secondary);
 	letter-spacing: 0.01em;
+	display: flex;
+	gap: var(--space-xs);
 }
 
 .actions {
@@ -222,15 +237,6 @@
 }
 
 @media (max-width: 1024px) {
-	.topSection {
-		grid-template-columns: 1fr;
-	}
-
-	.infoSidebar {
-		position: relative;
-		top: 0;
-	}
-
 	.pieces {
 		grid-template-columns: repeat(2, 1fr);
 	}
@@ -240,4 +246,17 @@
 	.pieces {
 		grid-template-columns: 1fr;
 	}
+}
+
+.gemstoneIcon {
+	width: 22px;
+	height: 22px;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.metalSwatch {
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
 }

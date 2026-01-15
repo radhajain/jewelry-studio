@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { MetalColor } from '../../types';
-import { PRESET_GEMSTONES } from '../../data/gemstones';
+import { GEMSTONES } from '../../data/gemstones';
 import Button from '../common/Button';
+import { MetalSelector } from '../common/MetalSelector';
+import { GemstoneSelector } from '../common/GemstoneSelector';
 import { suggestMaterials, MaterialSuggestion } from '../../utils/anthropic';
 import { Step1Data } from './CollectionWizardStep1';
 import styles from './CollectionWizardStep2.module.css';
-
-const METALS: MetalColor[] = [
-	'yellow-gold',
-	'white-gold',
-	'rose-gold',
-	'platinum',
-	'silver',
-];
+import { Metal, MetalColor, MetalColors } from '../../data/metals';
 
 export interface Step2Data {
 	metals: MetalColor[];
@@ -49,7 +43,11 @@ export const CollectionWizardStep2: React.FC<CollectionWizardStep2Props> = ({
 	useEffect(() => {
 		// Only auto-fetch suggestions if we're creating a new collection
 		// (not editing an existing one)
-		if (!initialData || (initialData.metals?.length === 0 && initialData.gemstoneIds?.length === 0)) {
+		if (
+			!initialData ||
+			(initialData.metals?.length === 0 &&
+				initialData.gemstoneIds?.length === 0)
+		) {
 			fetchSuggestions();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,14 +85,12 @@ export const CollectionWizardStep2: React.FC<CollectionWizardStep2Props> = ({
 		// Map suggestion metals to MetalColor type
 		const suggestedMetals = suggestion.metals
 			.map((m) => m.toLowerCase().replace(/\s+/g, '-'))
-			.filter((m) => METALS.includes(m as MetalColor)) as MetalColor[];
+			.filter((m) => MetalColors.includes(m as MetalColor)) as MetalColor[];
 
 		// Map suggestion gemstones to gemstone IDs
 		const suggestedGemstones = suggestion.gemstones
 			.map((g) => g.toLowerCase())
-			.map(
-				(g) => PRESET_GEMSTONES.find((gem) => gem.name.toLowerCase() === g)?.id
-			)
+			.map((g) => GEMSTONES.find((gem) => gem.name.toLowerCase() === g)?.id)
 			.filter(Boolean) as string[];
 
 		setFormData({
@@ -111,7 +107,9 @@ export const CollectionWizardStep2: React.FC<CollectionWizardStep2Props> = ({
 		setFormData({ ...formData, metals });
 	};
 
-	const toggleGemstone = (gemstoneId: string) => {
+	const toggleGemstone = (gemstoneId: string | null) => {
+		if (gemstoneId === null) return; // No-op for null in multi-select mode
+
 		const gemstoneIds = formData.gemstoneIds.includes(gemstoneId)
 			? formData.gemstoneIds.filter((id) => id !== gemstoneId)
 			: [...formData.gemstoneIds, gemstoneId];
@@ -180,53 +178,27 @@ export const CollectionWizardStep2: React.FC<CollectionWizardStep2Props> = ({
 
 				{/* Metal Selection */}
 				<section className={styles.section}>
-					<h3 className={styles.sectionTitle}>Metals</h3>
-					<p className={styles.sectionDescription}>
-						Select the metals you want to use in this collection
-					</p>
-					<div className={styles.metalGrid}>
-						{METALS.map((metal) => (
-							<button
-								key={metal}
-								type="button"
-								onClick={() => toggleMetal(metal)}
-								className={`${styles.metalButton} ${
-									formData.metals.includes(metal) ? styles.active : ''
-								}`}
-							>
-								{metal.replace('-', ' ')}
-							</button>
-						))}
-					</div>
+					<MetalSelector
+						availableMetals={MetalColors}
+						selectedMetals={formData.metals}
+						onMetalChange={toggleMetal}
+						multiSelect={true}
+						label="Metals"
+						description="Select the metals you want to use in this collection"
+					/>
 				</section>
 
 				{/* Gemstone Selection */}
 				<section className={styles.section}>
-					<h3 className={styles.sectionTitle}>Gemstones</h3>
-					<p className={styles.sectionDescription}>
-						Select gemstones to include in your collection palette
-					</p>
-					<div className={styles.gemstoneGrid}>
-						{PRESET_GEMSTONES.map((gemstone) => (
-							<button
-								key={gemstone.id}
-								type="button"
-								onClick={() => toggleGemstone(gemstone.id)}
-								className={`${styles.gemstoneButton} ${
-									formData.gemstoneIds.includes(gemstone.id)
-										? styles.active
-										: ''
-								}`}
-							>
-								<img
-									src={gemstone.imageUrl}
-									alt={gemstone.name}
-									className={styles.gemstoneImage}
-								/>
-								<div className={styles.gemstoneName}>{gemstone.name}</div>
-							</button>
-						))}
-					</div>
+					<GemstoneSelector
+						availableGemstones={GEMSTONES}
+						selectedGemstones={formData.gemstoneIds}
+						onGemstoneChange={toggleGemstone}
+						multiSelect={true}
+						label="Gemstones"
+						description="Select gemstones to include in your collection palette"
+						showNoneOption={false}
+					/>
 				</section>
 			</div>
 
@@ -241,7 +213,7 @@ export const CollectionWizardStep2: React.FC<CollectionWizardStep2Props> = ({
 					onClick={handleComplete}
 					disabled={formData.metals.length === 0}
 				>
-					Create Collection
+					{isEditing ? 'Save Collection' : 'Create Collection'}
 				</Button>
 			</div>
 		</div>

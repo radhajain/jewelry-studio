@@ -1,0 +1,48 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+}
+
+.label {
+	font-size: 16px;
+	font-weight: 400;
+	color: var(--color-text-primary);
+	margin: 0;
+}
+
+.description {
+	font-size: 14px;
+	color: var(--color-text-secondary);
+	margin: 0;
+	line-height: 1.5;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	gap: var(--space-md);
+}
+
+.option {
+	padding: var(--space-md) var(--space-lg);
+	background: var(--color-bg-secondary);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	font-size: 14px;
+	color: var(--color-text-secondary);
+	cursor: pointer;
+	transition: all var(--transition-fast);
+	text-transform: capitalize;
+}
+
+.option:hover {
+	background: var(--color-bg-secondary);
+	border-color: var(--color-text-secondary);
+}
+
+.option.active {
+	background: var(--color-bg-tertiary);
+	color: var(--color-bg-primary);
+	border-color: var(--color-text-primary);
+}

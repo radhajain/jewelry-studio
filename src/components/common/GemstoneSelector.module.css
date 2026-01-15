@@ -1,0 +1,76 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+}
+
+.label {
+	font-size: 16px;
+	font-weight: 400;
+	color: var(--color-text-primary);
+	margin: 0;
+}
+
+.description {
+	font-size: 14px;
+	color: var(--color-text-secondary);
+	margin: 0;
+	line-height: 1.5;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	gap: var(--space-md);
+}
+
+.option {
+	padding: var(--space-md);
+	background: var(--color-bg-secondary);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	cursor: pointer;
+	transition: all var(--transition-fast);
+}
+
+.option:hover {
+	background: var(--color-bg-secondary);
+	border-color: var(--color-text-secondary);
+}
+
+.option.active {
+	background: var(--color-bg-tertiary);
+	border-color: var(--color-text-primary);
+}
+
+.option.active .optionLabel {
+	color: var(--color-bg-primary);
+}
+
+.optionContent {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-sm);
+}
+
+.gemstoneImage {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.optionLabel {
+	font-size: 13px;
+	color: var(--color-text-secondary);
+	text-align: center;
+	transition: color var(--transition-fast);
+}
+
+.emptyMessage {
+	text-align: center;
+	padding: var(--space-lg);
+	color: var(--color-text-tertiary);
+	font-size: 13px;
+}

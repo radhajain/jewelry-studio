@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useStore } from '../store';
 import { CollectionCard } from '../components/collections/CollectionCard';
-import Button from '../components/common/Button';
+import { useStore } from '../store';
 import styles from './Home.module.css';
 
 const Home: React.FC = () => {

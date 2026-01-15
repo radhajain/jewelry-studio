@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useStore } from '../store';
 import { CollectionForm } from '../components/collections/CollectionForm';
 import Button from '../components/common/Button';
@@ -27,7 +27,17 @@ const EditCollection: React.FC = () => {
 		<div className={styles.page}>
 			<div className={styles.container}>
 				<div className={styles.slug}>
-					Collections / {collection.name} / Edit
+					<Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+						Collections
+					</Link>{' '}
+					/{' '}
+					<Link
+						to={`/collections/${collectionId}`}
+						style={{ color: 'inherit', textDecoration: 'none' }}
+					>
+						{collection.name}
+					</Link>{' '}
+					/ Edit
 				</div>
 				<CollectionForm
 					collectionId={collectionId}

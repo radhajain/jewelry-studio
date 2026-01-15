@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { BezelDesign } from '../../types';
@@ -25,21 +25,22 @@ export const CollectionForm: React.FC<CollectionFormProps> = ({
 
   const isEditing = !!collectionId && !!existingCollection;
 
-  // Wizard state
-  const [currentStep, setCurrentStep] = useState<1 | 2>(1);
-  const [step1Data, setStep1Data] = useState<Step1Data | null>(null);
-
-  // Load existing collection data when editing
-  useEffect(() => {
+  // Initialize step1Data with existing collection data if editing
+  const getInitialStep1Data = (): Step1Data | null => {
     if (existingCollection) {
-      setStep1Data({
+      return {
         name: existingCollection.name,
         description: existingCollection.description,
         moodboard: existingCollection.moodboard,
         moodKeywords: existingCollection.theme.mood,
-      });
+      };
     }
-  }, [existingCollection]);
+    return null;
+  };
+
+  // Wizard state
+  const [currentStep, setCurrentStep] = useState<1 | 2>(1);
+  const [step1Data, setStep1Data] = useState<Step1Data | null>(getInitialStep1Data());
 
   const handleStep1Complete = (data: Step1Data) => {
     setStep1Data(data);
@@ -107,6 +108,7 @@ export const CollectionForm: React.FC<CollectionFormProps> = ({
                 }
               : undefined
           }
+          isEditing={isEditing}
           onComplete={handleStep2Complete}
           onBack={() => setCurrentStep(1)}
         />
