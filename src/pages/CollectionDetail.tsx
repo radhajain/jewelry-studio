@@ -83,46 +83,6 @@ const CollectionDetail: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [collection?.id]);
 
-	const materialImages: (GemImage | MetalImage)[] = React.useMemo(() => {
-		if (!collection) return [];
-		const gemstoneImages: GemImage[] = mapFilter(
-			collection.gemstoneIds,
-			(gemstoneId) => {
-				const gemstone = GEMSTONES.find((gem) => gem.id === gemstoneId);
-				return gemstone
-					? {
-							type: 'gem',
-							imageUrl: gemstone.imageUrl,
-							position: {
-								top: 10 + Math.random() * 70,
-								left: 10 + Math.random() * 70,
-							},
-					  }
-					: null;
-			}
-		);
-
-		const metalImages: MetalImage[] = mapFilter(
-			collection.colors.metals,
-			(metalId) => {
-				const metal = metals.find((m) => m.id === metalId);
-				return metal
-					? {
-							type: 'metal',
-							hexStart: metal.hexStart,
-							hexEnd: metal.hexEnd,
-							position: {
-								top: 10 + Math.random() * 70,
-								left: 10 + Math.random() * 70,
-							},
-					  }
-					: null;
-			}
-		);
-
-		return [...metalImages, ...gemstoneImages];
-	}, [collection]);
-
 	// Calculate grid columns based on image count
 	const gridCols = React.useMemo(() => {
 		if (!collection) return 2;
@@ -267,28 +227,6 @@ const CollectionDetail: React.FC = () => {
 						{collection.moodboard.map((image) => (
 							<div key={image.id} className={styles.moodboardImage}>
 								<img src={image.url} alt={image.description || 'Moodboard'} />
-							</div>
-						))}
-						{/* Material images scattered randomly over the moodboard */}
-						{materialImages.map((material, index) => (
-							<div
-								key={`material-${index}`}
-								className={styles.moodboardMaterialImage}
-								style={{
-									top: `${materialImages[index]?.position?.top || 50}%`,
-									left: `${materialImages[index]?.position?.left || 50}%`,
-									transform: 'translate(-50%, -50%)',
-								}}
-							>
-								{material.type === 'metal' ? (
-									<MetalSwatch
-										hexStart={material.hexStart}
-										hexEnd={material.hexEnd}
-										size={75}
-									/>
-								) : (
-									<img src={material.imageUrl} alt="Gemstone" />
-								)}
 							</div>
 						))}
 					</div>
